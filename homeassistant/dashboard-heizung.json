@@ -1,0 +1,1650 @@
+{
+ "title": "Heizung",
+ "views": [
+  {
+   "title": "Heizung",
+   "path": "heizung",
+   "type": "sections",
+   "max_columns": 4,
+   "icon": "mdi:heat-pump-outline",
+   "sections": [
+    {
+     "type": "grid",
+     "column_span": 2,
+     "cards": [
+      {
+       "type": "heading",
+       "heading": "Anlage",
+       "icon": "mdi:heat-pump-outline"
+      },
+      {
+       "type": "picture-elements",
+       "image": "/local/ochsner/anlage.svg?v=24ae178c",
+       "elements": [
+        {
+         "type": "conditional",
+         "conditions": [
+          {
+           "condition": "state",
+           "entity": "sensor.ochsner_umschaltventile",
+           "state": "Warmwasser"
+          }
+         ],
+         "elements": [
+          {
+           "type": "image",
+           "image": "/local/ochsner/valves_ww.svg?v=6ddfbe5c",
+           "tap_action": {
+            "action": "none"
+           },
+           "hold_action": {
+            "action": "none"
+           },
+           "style": {
+            "left": "50%",
+            "top": "50%",
+            "width": "100%",
+            "transform": "translate(-50%,-50%)",
+            "pointer-events": "none"
+           }
+          }
+         ]
+        },
+        {
+         "type": "conditional",
+         "conditions": [
+          {
+           "condition": "state",
+           "entity": "sensor.ochsner_umschaltventile",
+           "state": "Heizung"
+          }
+         ],
+         "elements": [
+          {
+           "type": "image",
+           "image": "/local/ochsner/valves_hz.svg?v=1396f4f9",
+           "tap_action": {
+            "action": "none"
+           },
+           "hold_action": {
+            "action": "none"
+           },
+           "style": {
+            "left": "50%",
+            "top": "50%",
+            "width": "100%",
+            "transform": "translate(-50%,-50%)",
+            "pointer-events": "none"
+           }
+          }
+         ]
+        },
+        {
+         "type": "conditional",
+         "conditions": [
+          {
+           "condition": "state",
+           "entity": "sensor.ochsner_umschaltventile",
+           "state": "Warmwasser"
+          },
+          {
+           "condition": "numeric_state",
+           "entity": "sensor.heating_ochsner_waermepumpe_warmeerzeugerpumpe_01_022",
+           "above": 0
+          }
+         ],
+         "elements": [
+          {
+           "type": "image",
+           "image": "/local/ochsner/flow_ww.svg?v=56c0cd30",
+           "tap_action": {
+            "action": "none"
+           },
+           "hold_action": {
+            "action": "none"
+           },
+           "style": {
+            "left": "50%",
+            "top": "50%",
+            "width": "100%",
+            "transform": "translate(-50%,-50%)",
+            "pointer-events": "none"
+           }
+          }
+         ]
+        },
+        {
+         "type": "conditional",
+         "conditions": [
+          {
+           "condition": "state",
+           "entity": "sensor.ochsner_umschaltventile",
+           "state": "Heizung"
+          },
+          {
+           "condition": "numeric_state",
+           "entity": "sensor.heating_ochsner_waermepumpe_warmeerzeugerpumpe_01_022",
+           "above": 0
+          }
+         ],
+         "elements": [
+          {
+           "type": "image",
+           "image": "/local/ochsner/flow_hz.svg?v=e2fc3276",
+           "tap_action": {
+            "action": "none"
+           },
+           "hold_action": {
+            "action": "none"
+           },
+           "style": {
+            "left": "50%",
+            "top": "50%",
+            "width": "100%",
+            "transform": "translate(-50%,-50%)",
+            "pointer-events": "none"
+           }
+          }
+         ]
+        },
+        {
+         "type": "conditional",
+         "conditions": [
+          {
+           "condition": "state",
+           "entity": "binary_sensor.heating_ochsner_heizkreis_heizkreispumpe_01_020",
+           "state": "on"
+          }
+         ],
+         "elements": [
+          {
+           "type": "image",
+           "image": "/local/ochsner/flow_hk.svg?v=609b6b29",
+           "tap_action": {
+            "action": "none"
+           },
+           "hold_action": {
+            "action": "none"
+           },
+           "style": {
+            "left": "50%",
+            "top": "50%",
+            "width": "100%",
+            "transform": "translate(-50%,-50%)",
+            "pointer-events": "none"
+           }
+          }
+         ]
+        },
+        {
+         "type": "state-label",
+         "entity": "sensor.heating_ochsner_anlage_aussentemperatur_00_000",
+         "prefix": "",
+         "style": {
+          "left": "2.70%",
+          "top": "13.23%",
+          "font-size": "clamp(8px, 0.88vw, 14px)",
+          "color": "var(--primary-text-color)",
+          "font-weight": "600",
+          "white-space": "nowrap",
+          "transform": "translate(0,-50%)",
+          "text-shadow": "0 0 3px var(--card-background-color)"
+         }
+        },
+        {
+         "type": "state-label",
+         "entity": "sensor.heating_ochsner_waermepumpe_status_warmeerzeuger_02_053",
+         "prefix": "",
+         "style": {
+          "left": "18.20%",
+          "top": "13.23%",
+          "font-size": "clamp(8px, 0.74vw, 12px)",
+          "color": "var(--primary-text-color)",
+          "font-weight": "400",
+          "white-space": "nowrap",
+          "transform": "translate(0,-50%)",
+          "text-shadow": "0 0 3px var(--card-background-color)"
+         }
+        },
+        {
+         "type": "state-label",
+         "entity": "sensor.ochsner_umschaltventile",
+         "prefix": "Ventile: ",
+         "style": {
+          "left": "33.50%",
+          "top": "13.23%",
+          "font-size": "clamp(8px, 0.74vw, 12px)",
+          "color": "var(--primary-text-color)",
+          "font-weight": "400",
+          "white-space": "nowrap",
+          "transform": "translate(0,-50%)",
+          "text-shadow": "0 0 3px var(--card-background-color)"
+         }
+        },
+        {
+         "type": "state-label",
+         "entity": "sensor.ochsner_wp_heizleistung_berechnet",
+         "prefix": "Wärme ",
+         "style": {
+          "left": "18.20%",
+          "top": "17.10%",
+          "font-size": "clamp(8px, 0.88vw, 14px)",
+          "color": "var(--primary-text-color)",
+          "font-weight": "600",
+          "white-space": "nowrap",
+          "transform": "translate(0,-50%)",
+          "text-shadow": "0 0 3px var(--card-background-color)"
+         }
+        },
+        {
+         "type": "state-label",
+         "entity": "sensor.heating_ochsner_waermepumpe_soll_verdichter_01_076",
+         "prefix": "Verdichter ",
+         "style": {
+          "left": "33.50%",
+          "top": "17.10%",
+          "font-size": "clamp(8px, 0.74vw, 12px)",
+          "color": "var(--primary-text-color)",
+          "font-weight": "400",
+          "white-space": "nowrap",
+          "transform": "translate(0,-50%)",
+          "text-shadow": "0 0 3px var(--card-background-color)"
+         }
+        },
+        {
+         "type": "state-label",
+         "entity": "sensor.ochsner_wp_elektrische_leistung",
+         "prefix": "Strom ",
+         "style": {
+          "left": "18.20%",
+          "top": "20.97%",
+          "font-size": "clamp(8px, 0.74vw, 12px)",
+          "color": "var(--primary-text-color)",
+          "font-weight": "400",
+          "white-space": "nowrap",
+          "transform": "translate(0,-50%)",
+          "text-shadow": "0 0 3px var(--card-background-color)"
+         }
+        },
+        {
+         "type": "state-label",
+         "entity": "sensor.ochsner_wp_cop_aktuell",
+         "prefix": "COP ",
+         "style": {
+          "left": "33.50%",
+          "top": "20.97%",
+          "font-size": "clamp(8px, 0.74vw, 12px)",
+          "color": "var(--primary-text-color)",
+          "font-weight": "400",
+          "white-space": "nowrap",
+          "transform": "translate(0,-50%)",
+          "text-shadow": "0 0 3px var(--card-background-color)"
+         }
+        },
+        {
+         "type": "state-label",
+         "entity": "sensor.heating_ochsner_waermepumpe_ist_temp_tb_warmwasser_00_004",
+         "prefix": "Ist ",
+         "style": {
+          "left": "57.20%",
+          "top": "13.23%",
+          "font-size": "clamp(8px, 0.88vw, 14px)",
+          "color": "var(--primary-text-color)",
+          "font-weight": "600",
+          "white-space": "nowrap",
+          "transform": "translate(0,-50%)",
+          "text-shadow": "0 0 3px var(--card-background-color)"
+         }
+        },
+        {
+         "type": "state-label",
+         "entity": "sensor.heating_ochsner_warmwasserkreis_warmwassertemperatur_sollwert_01_004",
+         "prefix": "Soll ",
+         "style": {
+          "left": "73.00%",
+          "top": "13.23%",
+          "font-size": "clamp(8px, 0.74vw, 12px)",
+          "color": "var(--primary-text-color)",
+          "font-weight": "400",
+          "white-space": "nowrap",
+          "transform": "translate(0,-50%)",
+          "text-shadow": "0 0 3px var(--card-background-color)"
+         }
+        },
+        {
+         "type": "state-label",
+         "entity": "sensor.heating_ochsner_warmwasserkreis_status_warmwasserregelung_02_052",
+         "prefix": "",
+         "style": {
+          "left": "57.20%",
+          "top": "17.10%",
+          "font-size": "clamp(8px, 0.74vw, 12px)",
+          "color": "var(--primary-text-color)",
+          "font-weight": "400",
+          "white-space": "nowrap",
+          "transform": "translate(0,-50%)",
+          "text-shadow": "0 0 3px var(--card-background-color)"
+         }
+        },
+        {
+         "type": "state-label",
+         "entity": "sensor.heating_ochsner_waermepumpe_ist_temp_twv_00_007",
+         "prefix": "Vorlauf ",
+         "style": {
+          "left": "19.70%",
+          "top": "83.87%",
+          "font-size": "clamp(8px, 0.88vw, 14px)",
+          "color": "#e5484d",
+          "font-weight": "600",
+          "white-space": "nowrap",
+          "transform": "translate(0,-50%)",
+          "text-shadow": "0 0 3px var(--card-background-color)"
+         }
+        },
+        {
+         "type": "state-label",
+         "entity": "sensor.ochsner_wp_spreizung",
+         "prefix": "Spreizung ",
+         "style": {
+          "left": "37.50%",
+          "top": "83.87%",
+          "font-size": "clamp(8px, 0.74vw, 12px)",
+          "color": "var(--primary-text-color)",
+          "font-weight": "400",
+          "white-space": "nowrap",
+          "transform": "translate(0,-50%)",
+          "text-shadow": "0 0 3px var(--card-background-color)"
+         }
+        },
+        {
+         "type": "state-label",
+         "entity": "sensor.heating_ochsner_waermepumpe_ist_temp_twr_00_008",
+         "prefix": "Rücklauf ",
+         "style": {
+          "left": "19.70%",
+          "top": "87.74%",
+          "font-size": "clamp(8px, 0.88vw, 14px)",
+          "color": "#3e9bdc",
+          "font-weight": "600",
+          "white-space": "nowrap",
+          "transform": "translate(0,-50%)",
+          "text-shadow": "0 0 3px var(--card-background-color)"
+         }
+        },
+        {
+         "type": "state-label",
+         "entity": "sensor.heating_ochsner_waermepumpe_volumenstrom_warmepumpe_21_002",
+         "prefix": "Durchfluss ",
+         "style": {
+          "left": "37.50%",
+          "top": "87.74%",
+          "font-size": "clamp(8px, 0.74vw, 12px)",
+          "color": "var(--primary-text-color)",
+          "font-weight": "400",
+          "white-space": "nowrap",
+          "transform": "translate(0,-50%)",
+          "text-shadow": "0 0 3px var(--card-background-color)"
+         }
+        },
+        {
+         "type": "state-label",
+         "entity": "sensor.heating_ochsner_waermepumpe_warmeerzeugerpumpe_01_022",
+         "prefix": "Pumpe ",
+         "style": {
+          "left": "19.70%",
+          "top": "91.61%",
+          "font-size": "clamp(8px, 0.74vw, 12px)",
+          "color": "var(--primary-text-color)",
+          "font-weight": "400",
+          "white-space": "nowrap",
+          "transform": "translate(0,-50%)",
+          "text-shadow": "0 0 3px var(--card-background-color)"
+         }
+        },
+        {
+         "type": "state-label",
+         "entity": "sensor.heating_ochsner_heizkreis_heizkreis_vorlauftemperatur_00_002",
+         "prefix": "Ist ",
+         "style": {
+          "left": "59.20%",
+          "top": "83.87%",
+          "font-size": "clamp(8px, 0.88vw, 14px)",
+          "color": "#f5a524",
+          "font-weight": "600",
+          "white-space": "nowrap",
+          "transform": "translate(0,-50%)",
+          "text-shadow": "0 0 3px var(--card-background-color)"
+         }
+        },
+        {
+         "type": "state-label",
+         "entity": "sensor.heating_ochsner_heizkreis_heizkreis_vorlauftemperatur_sollwert_01_002",
+         "prefix": "Soll ",
+         "style": {
+          "left": "77.00%",
+          "top": "83.87%",
+          "font-size": "clamp(8px, 0.74vw, 12px)",
+          "color": "var(--primary-text-color)",
+          "font-weight": "400",
+          "white-space": "nowrap",
+          "transform": "translate(0,-50%)",
+          "text-shadow": "0 0 3px var(--card-background-color)"
+         }
+        },
+        {
+         "type": "state-label",
+         "entity": "sensor.heating_ochsner_heizkreis_mischer_01_021",
+         "prefix": "Mischer ",
+         "style": {
+          "left": "59.20%",
+          "top": "87.74%",
+          "font-size": "clamp(8px, 0.74vw, 12px)",
+          "color": "var(--primary-text-color)",
+          "font-weight": "400",
+          "white-space": "nowrap",
+          "transform": "translate(0,-50%)",
+          "text-shadow": "0 0 3px var(--card-background-color)"
+         }
+        },
+        {
+         "type": "state-label",
+         "entity": "sensor.heating_ochsner_heizkreis_status_heizkreis_02_051",
+         "prefix": "",
+         "style": {
+          "left": "59.20%",
+          "top": "91.61%",
+          "font-size": "clamp(8px, 0.74vw, 12px)",
+          "color": "var(--primary-text-color)",
+          "font-weight": "400",
+          "white-space": "nowrap",
+          "transform": "translate(0,-50%)",
+          "text-shadow": "0 0 3px var(--card-background-color)"
+         }
+        },
+        {
+         "type": "state-label",
+         "entity": "sensor.heating_ochsner_waermemanager_tpo_puffertemperatur_oben_00_015",
+         "prefix": "oben ",
+         "style": {
+          "left": "58.00%",
+          "top": "40.65%",
+          "font-size": "clamp(8px, 0.78vw, 12px)",
+          "color": "var(--primary-text-color)",
+          "font-weight": "600",
+          "white-space": "nowrap",
+          "transform": "translate(-50%,-50%)",
+          "text-shadow": "0 0 3px var(--card-background-color)"
+         }
+        },
+        {
+         "type": "state-label",
+         "entity": "sensor.heating_ochsner_waermemanager_tpm_puffertemperatur_mitte_00_017",
+         "prefix": "Mitte ",
+         "style": {
+          "left": "58.00%",
+          "top": "51.94%",
+          "font-size": "clamp(8px, 0.78vw, 12px)",
+          "color": "var(--primary-text-color)",
+          "font-weight": "600",
+          "white-space": "nowrap",
+          "transform": "translate(-50%,-50%)",
+          "text-shadow": "0 0 3px var(--card-background-color)"
+         }
+        },
+        {
+         "type": "state-label",
+         "entity": "sensor.heating_ochsner_waermemanager_sollwert_anlage_01_096",
+         "prefix": "Soll ",
+         "style": {
+          "left": "58.00%",
+          "top": "55.32%",
+          "font-size": "clamp(8px, 0.74vw, 12px)",
+          "color": "var(--primary-text-color)",
+          "font-weight": "400",
+          "white-space": "nowrap",
+          "transform": "translate(-50%,-50%)",
+          "text-shadow": "0 0 3px var(--card-background-color)"
+         }
+        },
+        {
+         "type": "state-label",
+         "entity": "sensor.ochsner_betriebszustand",
+         "prefix": "",
+         "style": {
+          "left": "50.00%",
+          "top": "2.90%",
+          "font-size": "clamp(8px, 0.94vw, 15px)",
+          "color": "var(--primary-text-color)",
+          "font-weight": "600",
+          "white-space": "nowrap",
+          "transform": "translate(-50%,-50%)",
+          "text-shadow": "0 0 3px var(--card-background-color)"
+         }
+        },
+        {
+         "type": "state-icon",
+         "entity": "binary_sensor.heating_ochsner_heizkreis_heizkreispumpe_01_020",
+         "icon": "mdi:pump",
+         "style": {
+          "left": "78.00%",
+          "top": "48.39%",
+          "transform": "translate(-50%,-50%)"
+         }
+        },
+        {
+         "type": "state-icon",
+         "entity": "binary_sensor.heating_ochsner_anlage_sammelstorung_01_099",
+         "icon": "mdi:alert-circle",
+         "style": {
+          "left": "97.50%",
+          "top": "3.23%",
+          "transform": "translate(-50%,-50%)"
+         }
+        }
+       ],
+       "grid_options": {
+        "columns": "full"
+       }
+      },
+      {
+       "type": "history-graph",
+       "title": "Status",
+       "hours_to_show": 24,
+       "entities": [
+        {
+         "entity": "sensor.heating_ochsner_waermepumpe_status_warmeerzeuger_02_053"
+        },
+        {
+         "entity": "sensor.heating_ochsner_warmwasserkreis_status_warmwasserregelung_02_052"
+        },
+        {
+         "entity": "sensor.heating_ochsner_heizkreis_status_heizkreis_02_051"
+        }
+       ],
+       "grid_options": {
+        "columns": "full"
+       }
+      }
+     ]
+    },
+    {
+     "type": "grid",
+     "cards": [
+      {
+       "type": "heading",
+       "heading": "Jetzt",
+       "icon": "mdi:gauge"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.ochsner_betriebszustand",
+       "name": "Betriebszustand",
+       "grid_options": {
+        "columns": "full"
+       }
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.heating_ochsner_anlage_aussentemperatur_00_000",
+       "name": "Außen"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.ochsner_wp_heizleistung_berechnet",
+       "name": "Heizleistung"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.heating_ochsner_waermepumpe_ist_temp_twv_00_007",
+       "name": "Vorlauf WP"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.heating_ochsner_waermepumpe_ist_temp_twr_00_008",
+       "name": "Rücklauf WP"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.ochsner_wp_spreizung",
+       "name": "Spreizung"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.heating_ochsner_waermepumpe_volumenstrom_warmepumpe_21_002",
+       "name": "Volumenstrom"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.heating_ochsner_waermepumpe_ist_temp_tb_warmwasser_00_004",
+       "name": "Warmwasser Ist"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.heating_ochsner_waermemanager_tpo_puffertemperatur_oben_00_015",
+       "name": "Puffer oben"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.heating_ochsner_waermemanager_tpm_puffertemperatur_mitte_00_017",
+       "name": "Puffer Mitte"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.heating_ochsner_heizkreis_heizkreis_vorlauftemperatur_00_002",
+       "name": "Vorlauf Heizkreis"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.heating_ochsner_heizkreis_heizkreis_vorlauftemperatur_sollwert_01_002",
+       "name": "Vorlauf Soll"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.ochsner_wp_laufzeit_pro_start",
+       "name": "Laufzeit pro Start"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.heating_ochsner_waermemanager_status_warmemanager_02_054",
+       "name": "Wärmemanager"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.heating_ochsner_heizkreis_status_heizkreis_02_051",
+       "name": "Heizkreis"
+      }
+     ]
+    },
+    {
+     "type": "grid",
+     "cards": [
+      {
+       "type": "heading",
+       "heading": "Heizung einstellen",
+       "icon": "mdi:radiator"
+      },
+      {
+       "type": "tile",
+       "entity": "select.heating_ochsner_heizkreis_betriebswahl_heizung_03_050",
+       "name": "Betriebswahl Heizung",
+       "features": [
+        {
+         "type": "select-options"
+        }
+       ],
+       "grid_options": {
+        "columns": "full"
+       }
+      },
+      {
+       "type": "tile",
+       "entity": "number.heating_ochsner_heizkreis_fusspunkt_vorlauftemperatur_heizkurve_03_001",
+       "name": "Fußpunkt (bei 20 °C außen)",
+       "features": [
+        {
+         "type": "numeric-input",
+         "style": "buttons"
+        }
+       ]
+      },
+      {
+       "type": "tile",
+       "entity": "number.heating_ochsner_heizkreis_vlt_bei_norm_aussentemperatur_heizkurve_03_013",
+       "name": "Vorlauf bei Norm-AT",
+       "features": [
+        {
+         "type": "numeric-input",
+         "style": "buttons"
+        }
+       ]
+      },
+      {
+       "type": "tile",
+       "entity": "number.heating_ochsner_heizkreis_norm_aussentemperatur_heizkurve_03_012",
+       "name": "Norm-Außentemperatur",
+       "features": [
+        {
+         "type": "numeric-input",
+         "style": "buttons"
+        }
+       ]
+      },
+      {
+       "type": "tile",
+       "entity": "number.heating_ochsner_heizkreis_heizgrenze_normalbetrieb_03_021",
+       "name": "Heizgrenze normal",
+       "features": [
+        {
+         "type": "numeric-input",
+         "style": "buttons"
+        }
+       ]
+      },
+      {
+       "type": "tile",
+       "entity": "number.heating_ochsner_heizkreis_heizgrenze_sparbetrieb_03_002",
+       "name": "Heizgrenze spar",
+       "features": [
+        {
+         "type": "numeric-input",
+         "style": "buttons"
+        }
+       ]
+      },
+      {
+       "type": "tile",
+       "entity": "number.heating_ochsner_heizkreis_normal_raumtemperatur_heizbetrieb_03_051",
+       "name": "Raum normal",
+       "features": [
+        {
+         "type": "numeric-input",
+         "style": "buttons"
+        }
+       ]
+      },
+      {
+       "type": "tile",
+       "entity": "number.heating_ochsner_heizkreis_spar_raumtemperatur_heizbetrieb_03_053",
+       "name": "Raum spar",
+       "features": [
+        {
+         "type": "numeric-input",
+         "style": "buttons"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "grid",
+     "column_span": 4,
+     "cards": [
+      {
+       "type": "heading",
+       "heading": "Verläufe (24 h)",
+       "icon": "mdi:chart-line"
+      },
+      {
+       "type": "custom:apexcharts-card",
+       "header": {
+        "show": true,
+        "title": "Temperaturen",
+        "show_states": true,
+        "colorize_states": true
+       },
+       "cache": false,
+       "graph_span": "24h",
+       "chart_type": "line",
+       "apex_config": {
+        "chart": {
+         "height": 320
+        },
+        "legend": {
+         "show": false
+        }
+       },
+       "series": [
+        {
+         "entity": "sensor.heating_ochsner_waermepumpe_ist_temp_twv_00_007",
+         "name": "Vorlauf WP",
+         "color": "#e5484d",
+         "group_by": {
+          "func": "avg",
+          "duration": "5min"
+         }
+        },
+        {
+         "entity": "sensor.heating_ochsner_waermepumpe_ist_temp_twr_00_008",
+         "name": "Rücklauf WP",
+         "color": "#3e9bdc",
+         "group_by": {
+          "func": "avg",
+          "duration": "5min"
+         }
+        },
+        {
+         "entity": "sensor.heating_ochsner_heizkreis_heizkreis_vorlauftemperatur_00_002",
+         "name": "Vorlauf HK",
+         "color": "#f5a524",
+         "group_by": {
+          "func": "avg",
+          "duration": "5min"
+         }
+        },
+        {
+         "entity": "sensor.heating_ochsner_heizkreis_heizkreis_vorlauftemperatur_sollwert_01_002",
+         "name": "Soll HK",
+         "color": "#a1a1aa",
+         "group_by": {
+          "func": "avg",
+          "duration": "5min"
+         }
+        },
+        {
+         "entity": "sensor.heating_ochsner_anlage_aussentemperatur_00_000",
+         "name": "Außen",
+         "color": "#22c55e",
+         "group_by": {
+          "func": "avg",
+          "duration": "5min"
+         }
+        }
+       ],
+       "grid_options": {
+        "columns": 24
+       }
+      },
+      {
+       "type": "custom:apexcharts-card",
+       "header": {
+        "show": true,
+        "title": "Speicher UNI800",
+        "show_states": true,
+        "colorize_states": true
+       },
+       "cache": false,
+       "graph_span": "24h",
+       "chart_type": "line",
+       "apex_config": {
+        "chart": {
+         "height": 320
+        },
+        "legend": {
+         "show": false
+        }
+       },
+       "series": [
+        {
+         "entity": "sensor.heating_ochsner_waermepumpe_ist_temp_tb_warmwasser_00_004",
+         "name": "Warmwasser",
+         "color": "#e5484d",
+         "group_by": {
+          "func": "avg",
+          "duration": "5min"
+         },
+         "type": "area",
+         "opacity": 0.25
+        },
+        {
+         "entity": "sensor.heating_ochsner_waermemanager_tpo_puffertemperatur_oben_00_015",
+         "name": "Puffer oben",
+         "color": "#f5a524",
+         "group_by": {
+          "func": "avg",
+          "duration": "5min"
+         },
+         "type": "area",
+         "opacity": 0.25
+        },
+        {
+         "entity": "sensor.heating_ochsner_waermemanager_tpm_puffertemperatur_mitte_00_017",
+         "name": "Puffer Mitte",
+         "color": "#3e9bdc",
+         "group_by": {
+          "func": "avg",
+          "duration": "5min"
+         },
+         "type": "area",
+         "opacity": 0.25
+        }
+       ],
+       "grid_options": {
+        "columns": 24
+       }
+      },
+      {
+       "type": "custom:apexcharts-card",
+       "header": {
+        "show": true,
+        "title": "Heizleistung",
+        "show_states": true,
+        "colorize_states": true
+       },
+       "cache": false,
+       "graph_span": "24h",
+       "chart_type": "line",
+       "apex_config": {
+        "chart": {
+         "height": 200
+        },
+        "legend": {
+         "show": false
+        }
+       },
+       "series": [
+        {
+         "entity": "sensor.ochsner_wp_heizleistung_berechnet",
+         "name": "Heizleistung",
+         "color": "#f5a524",
+         "group_by": {
+          "func": "avg",
+          "duration": "5min"
+         },
+         "type": "area",
+         "opacity": 0.25
+        }
+       ],
+       "grid_options": {
+        "columns": "full"
+       }
+      }
+     ]
+    },
+    {
+     "type": "grid",
+     "cards": [
+      {
+       "type": "heading",
+       "heading": "Effizienz",
+       "icon": "mdi:leaf"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.ochsner_wp_cop_aktuell",
+       "name": "COP aktuell"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.ochsner_wp_arbeitszahl_heute",
+       "name": "Arbeitszahl heute"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.ochsner_wp_arbeitszahl_monat",
+       "name": "Arbeitszahl Monat"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.ochsner_wp_arbeitszahl_seit_zahler",
+       "name": "Arbeitszahl seit Zähler"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.ochsner_wp_elektrische_leistung",
+       "name": "Strom aktuell"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.ochsner_wp_heizleistung_berechnet",
+       "name": "Heizleistung"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.ochsner_wp_strom_heute",
+       "name": "Strom heute"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.ochsner_wp_warme_heute",
+       "name": "Wärme heute"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.ochsner_wp_strom_monat",
+       "name": "Strom Monat"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.ochsner_wp_warme_monat",
+       "name": "Wärme Monat"
+      },
+      {
+       "type": "heading",
+       "heading": "Heizen / Warmwasser getrennt",
+       "heading_style": "subtitle"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.ochsner_wp_arbeitszahl_heizen_heute",
+       "name": "AZ Heizen heute"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.ochsner_wp_arbeitszahl_warmwasser_heute",
+       "name": "AZ Warmwasser heute"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.ochsner_wp_arbeitszahl_heizen_monat",
+       "name": "AZ Heizen Monat"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.ochsner_wp_arbeitszahl_warmwasser_monat",
+       "name": "AZ Warmwasser Monat"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.ochsner_wp_arbeitszahl_heizen_seit_zahler",
+       "name": "AZ Heizen seit Zähler"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.ochsner_wp_arbeitszahl_warmwasser_seit_zahler",
+       "name": "AZ Warmwasser seit Zähler"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.ochsner_wp_strom_heizen_heute",
+       "name": "Strom Heizen heute"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.ochsner_wp_strom_warmwasser_heute",
+       "name": "Strom Warmwasser heute"
+      },
+      {
+       "type": "custom:apexcharts-card",
+       "header": {
+        "show": true,
+        "title": "Wärme, Strom & COP (24 h)",
+        "show_states": true,
+        "colorize_states": true
+       },
+       "cache": false,
+       "graph_span": "24h",
+       "chart_type": "line",
+       "apex_config": {
+        "chart": {
+         "height": 260
+        },
+        "legend": {
+         "show": true
+        }
+       },
+       "yaxis": [
+        {
+         "id": "kw",
+         "min": 0,
+         "decimals": 1,
+         "apex_config": {
+          "title": {
+           "text": "kW"
+          }
+         }
+        },
+        {
+         "id": "cop",
+         "opposite": true,
+         "min": 0,
+         "max": 8,
+         "decimals": 1,
+         "apex_config": {
+          "title": {
+           "text": "COP"
+          }
+         }
+        }
+       ],
+       "series": [
+        {
+         "entity": "sensor.ochsner_wp_heizleistung_berechnet",
+         "name": "Wärme",
+         "type": "area",
+         "opacity": 0.25,
+         "color": "#f5a524",
+         "yaxis_id": "kw",
+         "group_by": {
+          "func": "avg",
+          "duration": "5min"
+         }
+        },
+        {
+         "entity": "sensor.ochsner_wp_elektrische_leistung",
+         "name": "Strom",
+         "type": "area",
+         "opacity": 0.25,
+         "color": "#3e9bdc",
+         "yaxis_id": "kw",
+         "unit": "kW",
+         "transform": "return x / 1000;",
+         "group_by": {
+          "func": "avg",
+          "duration": "5min"
+         }
+        },
+        {
+         "entity": "sensor.ochsner_wp_cop_aktuell",
+         "name": "COP",
+         "color": "#22c55e",
+         "yaxis_id": "cop",
+         "stroke_width": 2,
+         "extend_to": false,
+         "group_by": {
+          "func": "avg",
+          "duration": "5min",
+          "fill": "null"
+         }
+        }
+       ],
+       "grid_options": {
+        "columns": "full"
+       }
+      },
+      {
+       "type": "custom:apexcharts-card",
+       "header": {
+        "show": true,
+        "title": "Wärme & Strom pro Tag (kWh)",
+        "show_states": false
+       },
+       "graph_span": "30d",
+       "span": {
+        "end": "day"
+       },
+       "chart_type": "line",
+       "apex_config": {
+        "chart": {
+         "height": 260
+        },
+        "legend": {
+         "show": true
+        }
+       },
+       "series": [
+        {
+         "entity": "sensor.ochsner_wp_warme_inkl_heizstab",
+         "name": "Wärme",
+         "type": "column",
+         "color": "#f5a524",
+         "statistics": {
+          "type": "change",
+          "period": "day",
+          "align": "start"
+         }
+        },
+        {
+         "entity": "sensor.ochsner_wp_stromverbrauch",
+         "name": "Strom",
+         "type": "column",
+         "color": "#3e9bdc",
+         "statistics": {
+          "type": "change",
+          "period": "day",
+          "align": "start"
+         }
+        }
+       ],
+       "grid_options": {
+        "columns": "full"
+       }
+      },
+      {
+       "type": "custom:apexcharts-card",
+       "header": {
+        "show": true,
+        "title": "Strom pro Tag nach Betriebsart (kWh)",
+        "show_states": false
+       },
+       "graph_span": "30d",
+       "span": {
+        "end": "day"
+       },
+       "chart_type": "line",
+       "stacked": true,
+       "apex_config": {
+        "chart": {
+         "height": 240
+        },
+        "legend": {
+         "show": true
+        }
+       },
+       "series": [
+        {
+         "entity": "sensor.ochsner_wp_strom_heizen",
+         "name": "Heizen",
+         "type": "column",
+         "color": "#f5a524",
+         "statistics": {
+          "type": "change",
+          "period": "day",
+          "align": "start"
+         }
+        },
+        {
+         "entity": "sensor.ochsner_wp_strom_warmwasser",
+         "name": "Warmwasser",
+         "type": "column",
+         "color": "#3e9bdc",
+         "statistics": {
+          "type": "change",
+          "period": "day",
+          "align": "start"
+         }
+        }
+       ],
+       "grid_options": {
+        "columns": "full"
+       }
+      }
+     ]
+    },
+    {
+     "type": "grid",
+     "cards": [
+      {
+       "type": "heading",
+       "heading": "Warmwasser",
+       "icon": "mdi:water-boiler"
+      },
+      {
+       "type": "tile",
+       "entity": "select.heating_ochsner_warmwasserkreis_betriebswahl_warmwasser_05_050",
+       "name": "Betriebswahl Warmwasser",
+       "features": [
+        {
+         "type": "select-options"
+        }
+       ],
+       "grid_options": {
+        "columns": "full"
+       }
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.heating_ochsner_waermepumpe_ist_temp_tb_warmwasser_00_004",
+       "name": "Warmwasser Ist"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.heating_ochsner_warmwasserkreis_status_warmwasserregelung_02_052",
+       "name": "Warmwasser"
+      },
+      {
+       "type": "tile",
+       "entity": "number.heating_ochsner_warmwasserkreis_normal_warmwassertemperatur_05_051",
+       "name": "Normal",
+       "features": [
+        {
+         "type": "numeric-input",
+         "style": "buttons"
+        }
+       ]
+      },
+      {
+       "type": "tile",
+       "entity": "number.heating_ochsner_warmwasserkreis_spar_warmwassertemperatur_05_086",
+       "name": "Spar",
+       "features": [
+        {
+         "type": "numeric-input",
+         "style": "buttons"
+        }
+       ]
+      },
+      {
+       "type": "tile",
+       "entity": "number.heating_ochsner_warmwasserkreis_einschaltdifferenz_warmwasserbereitung_05_000",
+       "name": "Einschaltdifferenz",
+       "features": [
+        {
+         "type": "numeric-input",
+         "style": "buttons"
+        }
+       ]
+      },
+      {
+       "type": "tile",
+       "entity": "number.heating_ochsner_waermemanager_puffer_solltemperatur_bei_sonderfreigabe_06_027",
+       "name": "Puffer bei SG-Freigabe",
+       "features": [
+        {
+         "type": "numeric-input",
+         "style": "buttons"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "grid",
+     "cards": [
+      {
+       "type": "heading",
+       "heading": "Heizkurve",
+       "icon": "mdi:chart-bell-curve-cumulative"
+      },
+      {
+       "type": "custom:apexcharts-card",
+       "header": {
+        "show": true,
+        "title": "Heizkurve",
+        "show_states": false
+       },
+       "graph_span": "40h",
+       "span": {
+        "start": "day"
+       },
+       "chart_type": "line",
+       "update_interval": "5min",
+       "now": {
+        "show": false
+       },
+       "apex_config": {
+        "chart": {
+         "height": 280
+        },
+        "xaxis": {
+         "tickAmount": 8,
+         "labels": {
+          "formatter": "EVAL:v => { const b = new Date(); b.setHours(0, 0, 0, 0); return Math.round((v - b.getTime()) / 3600000 - 20) + ' °C'; }",
+          "rotate": 0
+         },
+         "title": {
+          "text": "Außentemperatur"
+         },
+         "tooltip": {
+          "enabled": false
+         }
+        },
+        "yaxis": {
+         "min": 15,
+         "max": 45,
+         "tickAmount": 6,
+         "decimalsInFloat": 0,
+         "title": {
+          "text": "Vorlauf °C"
+         }
+        },
+        "tooltip": {
+         "x": {
+          "formatter": "EVAL:v => { const b = new Date(); b.setHours(0, 0, 0, 0); return Math.round((v - b.getTime()) / 3600000 - 20) + ' °C'; }"
+         }
+        },
+        "markers": {
+         "size": [
+          0,
+          8
+         ]
+        },
+        "legend": {
+         "show": true
+        }
+       },
+       "series": [
+        {
+         "entity": "number.heating_ochsner_heizkreis_fusspunkt_vorlauftemperatur_heizkurve_03_001",
+         "name": "Heizkurve",
+         "data_generator": "const b = new Date(); b.setHours(0, 0, 0, 0); const x = t => b.getTime() + (t + 20) * 3600000;const fp = parseFloat(entity.state);const nat = parseFloat(hass.states['number.heating_ochsner_heizkreis_norm_aussentemperatur_heizkurve_03_012'].state);const nvl = parseFloat(hass.states['number.heating_ochsner_heizkreis_vlt_bei_norm_aussentemperatur_heizkurve_03_013'].state);const m = (nvl - fp) / (20 - nat);const pts = []; for (let t = -20; t <= 20; t += 1) pts.push([x(t), +(fp + m * (20 - t)).toFixed(1)]);return pts;",
+         "stroke_width": 3,
+         "color": "#f5a524",
+         "extend_to": false
+        },
+        {
+         "entity": "sensor.heating_ochsner_heizkreis_heizkreis_vorlauftemperatur_sollwert_01_002",
+         "name": "jetzt (Soll)",
+         "data_generator": "const b = new Date(); b.setHours(0, 0, 0, 0); const x = t => b.getTime() + (t + 20) * 3600000;return [[x(parseFloat(hass.states['sensor.heating_ochsner_anlage_aussentemperatur_00_000'].state)), parseFloat(entity.state)]];",
+         "stroke_width": 0,
+         "color": "#e5484d",
+         "extend_to": false
+        }
+       ],
+       "grid_options": {
+        "columns": "full"
+       }
+      },
+      {
+       "type": "markdown",
+       "content": "{% set fp = states('number.heating_ochsner_heizkreis_fusspunkt_vorlauftemperatur_heizkurve_03_001') | float(20) %}{% set nat = states('number.heating_ochsner_heizkreis_norm_aussentemperatur_heizkurve_03_012') | float(-12) %}{% set nvl = states('number.heating_ochsner_heizkreis_vlt_bei_norm_aussentemperatur_heizkurve_03_013') | float(35) %}{% set at = states('sensor.heating_ochsner_anlage_aussentemperatur_00_000') | float(0) %}{% set m = (nvl - fp) / (20 - nat) %}| Außen | Vorlauf-Soll |\n|---:|---:|\n{% for t in [20, 15, 10, 5, 0, -5, -10, -15] %}| {{ t }} °C | {{ '%.1f' | format(fp + m * (20 - t)) }} °C |\n{% endfor %}\n**Jetzt:** {{ at }} °C außen → Kurve {{ '%.1f' | format(fp + m * (20 - at)) }} °C, Regler-Soll {{ states('sensor.heating_ochsner_heizkreis_heizkreis_vorlauftemperatur_sollwert_01_002') }} °C\n\nSteigung {{ '%.2f' | format(m) }} K pro K",
+       "grid_options": {
+        "columns": "full"
+       }
+      }
+     ]
+    },
+    {
+     "type": "grid",
+     "cards": [
+      {
+       "type": "heading",
+       "heading": "Energie & Zähler",
+       "icon": "mdi:lightning-bolt"
+      },
+      {
+       "type": "custom:apexcharts-card",
+       "header": {
+        "show": true,
+        "title": "Wärme pro Tag (kWh)",
+        "show_states": false
+       },
+       "graph_span": "30d",
+       "span": {
+        "end": "day"
+       },
+       "chart_type": "line",
+       "stacked": true,
+       "apex_config": {
+        "chart": {
+         "height": 260
+        },
+        "legend": {
+         "show": true
+        }
+       },
+       "series": [
+        {
+         "entity": "sensor.ochsner_wp_heizenergie_gesamt",
+         "name": "Heizen",
+         "type": "column",
+         "color": "#f5a524",
+         "statistics": {
+          "type": "change",
+          "period": "day",
+          "align": "start"
+         }
+        },
+        {
+         "entity": "sensor.ochsner_wp_warmwasserenergie_gesamt",
+         "name": "Warmwasser",
+         "type": "column",
+         "color": "#3e9bdc",
+         "statistics": {
+          "type": "change",
+          "period": "day",
+          "align": "start"
+         }
+        }
+       ],
+       "grid_options": {
+        "columns": "full"
+       }
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.ochsner_wp_warme_gesamt",
+       "name": "Wärme gesamt"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.ochsner_wp_heizenergie_gesamt",
+       "name": "Heizen gesamt"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.ochsner_wp_warmwasserenergie_gesamt",
+       "name": "Warmwasser gesamt"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.ochsner_zusatzheizung_heizenergie_gesamt",
+       "name": "Heizstab gesamt"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.ochsner_wp_betriebsstunden",
+       "name": "Betriebsstunden"
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.heating_ochsner_waermepumpe_schaltzyklen_02_080",
+       "name": "Starts"
+      },
+      {
+       "type": "custom:apexcharts-card",
+       "header": {
+        "show": true,
+        "title": "Laufzeit & Starts pro Tag",
+        "show_states": false
+       },
+       "graph_span": "30d",
+       "span": {
+        "end": "day"
+       },
+       "chart_type": "line",
+       "apex_config": {
+        "chart": {
+         "height": 260
+        },
+        "legend": {
+         "show": true
+        }
+       },
+       "yaxis": [
+        {
+         "id": "h",
+         "min": 0,
+         "decimals": 1,
+         "apex_config": {
+          "title": {
+           "text": "Stunden"
+          }
+         }
+        },
+        {
+         "id": "n",
+         "opposite": true,
+         "min": 0,
+         "decimals": 0,
+         "apex_config": {
+          "title": {
+           "text": "Starts"
+          }
+         }
+        }
+       ],
+       "series": [
+        {
+         "entity": "sensor.ochsner_wp_betriebsstunden",
+         "name": "Laufzeit",
+         "type": "column",
+         "color": "#f5a524",
+         "yaxis_id": "h",
+         "statistics": {
+          "type": "change",
+          "period": "day",
+          "align": "start"
+         }
+        },
+        {
+         "entity": "sensor.heating_ochsner_waermepumpe_schaltzyklen_02_080",
+         "name": "Starts",
+         "type": "line",
+         "color": "#3e9bdc",
+         "stroke_width": 3,
+         "yaxis_id": "n",
+         "statistics": {
+          "type": "change",
+          "period": "day",
+          "align": "start"
+         }
+        }
+       ],
+       "grid_options": {
+        "columns": "full"
+       }
+      }
+     ]
+    },
+    {
+     "type": "grid",
+     "cards": [
+      {
+       "type": "heading",
+       "heading": "Störungen & Info",
+       "icon": "mdi:information-outline"
+      },
+      {
+       "type": "entities",
+       "title": "Störungsspeicher",
+       "grid_options": {
+        "columns": "full"
+       },
+       "entities": [
+        {
+         "entity": "binary_sensor.heating_ochsner_anlage_sammelstorung_01_099",
+         "name": "Sammelstörung"
+        },
+        {
+         "entity": "sensor.ochsner_storung_1",
+         "name": "Störung 1"
+        },
+        {
+         "entity": "sensor.ochsner_storung_2",
+         "name": "Störung 2"
+        },
+        {
+         "entity": "sensor.ochsner_storung_3",
+         "name": "Störung 3"
+        },
+        {
+         "entity": "sensor.ochsner_storung_4",
+         "name": "Störung 4"
+        },
+        {
+         "entity": "sensor.ochsner_storung_5",
+         "name": "Störung 5"
+        },
+        {
+         "entity": "sensor.ochsner_storung_6",
+         "name": "Störung 6"
+        }
+       ]
+      },
+      {
+       "type": "entities",
+       "title": "Anlage",
+       "grid_options": {
+        "columns": "full"
+       },
+       "entities": [
+        {
+         "entity": "sensor.ochsner_seriennummer",
+         "name": "Seriennummer"
+        },
+        {
+         "entity": "sensor.ochsner_installateur",
+         "name": "Installateur"
+        },
+        {
+         "entity": "sensor.ochsner_letzter_zugriff_fachpartner",
+         "name": "Letzter Zugriff Fachpartner"
+        },
+        {
+         "entity": "sensor.ochsner_letzter_zugriff_oem",
+         "name": "Letzter Zugriff OEM"
+        },
+        {
+         "entity": "sensor.heating_ochsner_anlage_sw_version_04_092",
+         "name": "Software"
+        },
+        {
+         "entity": "sensor.heating_ochsner_anlage_hw_version_04_093",
+         "name": "Hardware"
+        },
+        {
+         "entity": "sensor.heating_ochsner_waermepumpe_applikationstyp_warmepumpe_15_006",
+         "name": "Applikationstyp"
+        },
+        {
+         "entity": "sensor.heating_ochsner_anlage_ebene_einsteller_04_043",
+         "name": "Bedienebene"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

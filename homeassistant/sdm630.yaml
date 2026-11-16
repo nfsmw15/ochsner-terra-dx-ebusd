@@ -1,0 +1,386 @@
+# Stromzähler Eastron SDM630-M (MID) vor der gesamten Ochsner-Wärmepumpe: Verdichter, Heizstab, Regler und
+# Pumpen (Standby mit laufenden Pumpen ~35 W). Arbeitszahlen sind damit System-Arbeitszahlen.
+# Anbindung: Waveshare RS485-zu-Ethernet im Modbus-TCP-Gateway-Modus, <MODBUS_GATEWAY_IP>:502, Zähleradresse 1.
+# Ablage: /config/packages/sdm630.yaml
+# Register (Input Register, float32): siehe Eastron SDM630 Modbus Protocol.
+
+modbus:
+  - name: sdm630_wp
+    type: tcp
+    host: <MODBUS_GATEWAY_IP>
+    port: 502
+    timeout: 5
+    sensors:
+      - name: "Ochsner WP elektrische Leistung"
+        unique_id: sdm630_wp_leistung
+        device_address: 1
+        input_type: input
+        address: 52
+        data_type: float32
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        precision: 0
+        scan_interval: 5
+      - name: "Ochsner WP Leistung L1"
+        unique_id: sdm630_wp_leistung_l1
+        device_address: 1
+        input_type: input
+        address: 12
+        data_type: float32
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        precision: 0
+        scan_interval: 15
+      - name: "Ochsner WP Leistung L2"
+        unique_id: sdm630_wp_leistung_l2
+        device_address: 1
+        input_type: input
+        address: 14
+        data_type: float32
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        precision: 0
+        scan_interval: 15
+      - name: "Ochsner WP Leistung L3"
+        unique_id: sdm630_wp_leistung_l3
+        device_address: 1
+        input_type: input
+        address: 16
+        data_type: float32
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        precision: 0
+        scan_interval: 15
+      - name: "Ochsner WP Strom L1"
+        unique_id: sdm630_wp_strom_l1
+        device_address: 1
+        input_type: input
+        address: 6
+        data_type: float32
+        unit_of_measurement: A
+        device_class: current
+        state_class: measurement
+        precision: 2
+        scan_interval: 15
+      - name: "Ochsner WP Strom L2"
+        unique_id: sdm630_wp_strom_l2
+        device_address: 1
+        input_type: input
+        address: 8
+        data_type: float32
+        unit_of_measurement: A
+        device_class: current
+        state_class: measurement
+        precision: 2
+        scan_interval: 15
+      - name: "Ochsner WP Strom L3"
+        unique_id: sdm630_wp_strom_l3
+        device_address: 1
+        input_type: input
+        address: 10
+        data_type: float32
+        unit_of_measurement: A
+        device_class: current
+        state_class: measurement
+        precision: 2
+        scan_interval: 15
+      - name: "Ochsner WP Spannung L1"
+        unique_id: sdm630_wp_spannung_l1
+        device_address: 1
+        input_type: input
+        address: 0
+        data_type: float32
+        unit_of_measurement: V
+        device_class: voltage
+        state_class: measurement
+        precision: 1
+        scan_interval: 60
+      - name: "Ochsner WP Spannung L2"
+        unique_id: sdm630_wp_spannung_l2
+        device_address: 1
+        input_type: input
+        address: 2
+        data_type: float32
+        unit_of_measurement: V
+        device_class: voltage
+        state_class: measurement
+        precision: 1
+        scan_interval: 60
+      - name: "Ochsner WP Spannung L3"
+        unique_id: sdm630_wp_spannung_l3
+        device_address: 1
+        input_type: input
+        address: 4
+        data_type: float32
+        unit_of_measurement: V
+        device_class: voltage
+        state_class: measurement
+        precision: 1
+        scan_interval: 60
+      - name: "Ochsner WP Leistungsfaktor"
+        unique_id: sdm630_wp_leistungsfaktor
+        device_address: 1
+        input_type: input
+        address: 62
+        data_type: float32
+        device_class: power_factor
+        state_class: measurement
+        precision: 2
+        scan_interval: 30
+      - name: "Ochsner WP Netzfrequenz"
+        unique_id: sdm630_wp_frequenz
+        device_address: 1
+        input_type: input
+        address: 70
+        data_type: float32
+        unit_of_measurement: Hz
+        device_class: frequency
+        state_class: measurement
+        precision: 2
+        scan_interval: 60
+      - name: "Ochsner WP Stromverbrauch"
+        unique_id: sdm630_wp_import_kwh
+        device_address: 1
+        input_type: input
+        address: 72
+        data_type: float32
+        unit_of_measurement: kWh
+        device_class: energy
+        state_class: total_increasing
+        precision: 3
+        scan_interval: 30
+      - name: "Ochsner WP Stromzähler Export"
+        unique_id: sdm630_wp_export_kwh
+        device_address: 1
+        input_type: input
+        address: 74
+        data_type: float32
+        unit_of_measurement: kWh
+        device_class: energy
+        state_class: total_increasing
+        precision: 3
+        scan_interval: 300
+
+template:
+  - sensor:
+      # abgegebene Wärme inkl. Heizstab, damit die Arbeitszahl zum gemessenen Strom (Verdichter + Heizstab) passt
+      - name: "Ochsner WP Wärme inkl. Heizstab"
+        unique_id: ochsner_wp_waerme_inkl_heizstab
+        unit_of_measurement: kWh
+        device_class: energy
+        state_class: total_increasing
+        availability: >
+          {{ has_value('sensor.ochsner_wp_warme_gesamt') and has_value('sensor.ochsner_zusatzheizung_heizenergie_gesamt') }}
+        state: >
+          {{ (states('sensor.ochsner_wp_warme_gesamt') | float + states('sensor.ochsner_zusatzheizung_heizenergie_gesamt') | float) | round(1) }}
+
+      # Momentan-COP: berechnete Heizleistung / gemessene elektrische Leistung, nur im eingeschwungenen Betrieb.
+      # Beim Verdichterstart (Spreizung baut sich erst auf), beim Umschalten WW <-> Heizen (Rücklauf aus anderer
+      # Speicherzone) und beim Stopp (nur Pumpen, Restspreizung) ergäbe die Formel Werte von 0,2 bis 12.
+      - name: "Ochsner WP COP aktuell"
+        unique_id: ochsner_wp_cop_aktuell
+        state_class: measurement
+        icon: mdi:heat-pump
+        availability: >
+          {% set v = states.sensor.heating_ochsner_waermepumpe_soll_verdichter_01_076 %}
+          {% set u = states.sensor.ochsner_umschaltventile %}
+          {{ states('sensor.ochsner_wp_elektrische_leistung') | float(0) > 800
+             and states('sensor.ochsner_wp_heizleistung_berechnet') | float(0) > 0
+             and v is not none and v.state | float(0) > 0 and now() - v.last_changed > timedelta(minutes=5)
+             and (u is none or now() - u.last_changed > timedelta(minutes=5)) }}
+        state: >
+          {{ (states('sensor.ochsner_wp_heizleistung_berechnet') | float * 1000
+              / states('sensor.ochsner_wp_elektrische_leistung') | float) | round(2) }}
+
+      - name: "Ochsner WP Arbeitszahl heute"
+        unique_id: ochsner_wp_arbeitszahl_heute
+        state_class: measurement
+        icon: mdi:chart-line
+        availability: "{{ states('sensor.ochsner_wp_strom_heute') | float(0) > 0.2 }}"
+        state: >
+          {{ (states('sensor.ochsner_wp_warme_heute') | float(0) / states('sensor.ochsner_wp_strom_heute') | float) | round(2) }}
+
+      - name: "Ochsner WP Arbeitszahl Monat"
+        unique_id: ochsner_wp_arbeitszahl_monat
+        state_class: measurement
+        icon: mdi:chart-line
+        availability: "{{ states('sensor.ochsner_wp_strom_monat') | float(0) > 1 }}"
+        state: >
+          {{ (states('sensor.ochsner_wp_warme_monat') | float(0) / states('sensor.ochsner_wp_strom_monat') | float) | round(2) }}
+
+      - name: "Ochsner WP Arbeitszahl seit Zähler"
+        unique_id: ochsner_wp_arbeitszahl_gesamt
+        state_class: measurement
+        icon: mdi:chart-line
+        availability: "{{ states('sensor.ochsner_wp_strom_seit_zahler') | float(0) > 1 }}"
+        state: >
+          {{ (states('sensor.ochsner_wp_warme_seit_zahler') | float(0) / states('sensor.ochsner_wp_strom_seit_zahler') | float) | round(2) }}
+
+  # Strom nach Betriebsart aufteilen: jede Zunahme des MID-Zählerstands geht an Heizen oder Warmwasser,
+  # je nach Betriebsart, die der Regler dem WP-Modul schickt (0501, "Warmwasser" / "Heizen").
+  # Stillstand mit laufenden Pumpen zählt zum Heizen.
+  - trigger:
+      - platform: state
+        entity_id: sensor.ochsner_wp_stromverbrauch
+    sensor:
+      - name: "Ochsner WP Strom Heizen"
+        unique_id: ochsner_wp_strom_heizen
+        unit_of_measurement: kWh
+        device_class: energy
+        state_class: total_increasing
+        state: >
+          {% set a = trigger.from_state.state | float(none) if trigger.from_state else none %}
+          {% set b = trigger.to_state.state | float(none) %}
+          {% set d = b - a if a is not none and b is not none and 0 < b - a < 5 else 0 %}
+          {% set ww = states('sensor.warmepumpe_ochsner_waermepumpe_anforderung_an_warmeerzeuger_betriebsart') == 'Warmwasser' %}
+          {{ (this.state | float(0) + (0 if ww else d)) | round(3) }}
+      - name: "Ochsner WP Strom Warmwasser"
+        unique_id: ochsner_wp_strom_warmwasser
+        unit_of_measurement: kWh
+        device_class: energy
+        state_class: total_increasing
+        state: >
+          {% set a = trigger.from_state.state | float(none) if trigger.from_state else none %}
+          {% set b = trigger.to_state.state | float(none) %}
+          {% set d = b - a if a is not none and b is not none and 0 < b - a < 5 else 0 %}
+          {% set ww = states('sensor.warmepumpe_ochsner_waermepumpe_anforderung_an_warmeerzeuger_betriebsart') == 'Warmwasser' %}
+          {{ (this.state | float(0) + (d if ww else 0)) | round(3) }}
+
+  - sensor:
+      - name: "Ochsner WP Arbeitszahl Heizen heute"
+        unique_id: ochsner_wp_arbeitszahl_heizen_heute
+        state_class: measurement
+        icon: mdi:chart-line
+        availability: "{{ states('sensor.ochsner_wp_strom_heizen_heute') | float(0) > 0.2 }}"
+        state: >
+          {{ (states('sensor.ochsner_wp_warme_heizen_heute') | float(0) / states('sensor.ochsner_wp_strom_heizen_heute') | float) | round(2) }}
+
+      - name: "Ochsner WP Arbeitszahl Heizen Monat"
+        unique_id: ochsner_wp_arbeitszahl_heizen_monat
+        state_class: measurement
+        icon: mdi:chart-line
+        availability: "{{ states('sensor.ochsner_wp_strom_heizen_monat') | float(0) > 1 }}"
+        state: >
+          {{ (states('sensor.ochsner_wp_warme_heizen_monat') | float(0) / states('sensor.ochsner_wp_strom_heizen_monat') | float) | round(2) }}
+
+      - name: "Ochsner WP Arbeitszahl Heizen seit Zähler"
+        unique_id: ochsner_wp_arbeitszahl_heizen_seit_zahler
+        state_class: measurement
+        icon: mdi:chart-line
+        availability: "{{ states('sensor.ochsner_wp_strom_heizen_seit_zahler') | float(0) > 1 }}"
+        state: >
+          {{ (states('sensor.ochsner_wp_warme_heizen_seit_zahler') | float(0) / states('sensor.ochsner_wp_strom_heizen_seit_zahler') | float) | round(2) }}
+
+      - name: "Ochsner WP Arbeitszahl Warmwasser heute"
+        unique_id: ochsner_wp_arbeitszahl_warmwasser_heute
+        state_class: measurement
+        icon: mdi:chart-line
+        availability: "{{ states('sensor.ochsner_wp_strom_warmwasser_heute') | float(0) > 0.2 }}"
+        state: >
+          {{ (states('sensor.ochsner_wp_warme_warmwasser_heute') | float(0) / states('sensor.ochsner_wp_strom_warmwasser_heute') | float) | round(2) }}
+
+      - name: "Ochsner WP Arbeitszahl Warmwasser Monat"
+        unique_id: ochsner_wp_arbeitszahl_warmwasser_monat
+        state_class: measurement
+        icon: mdi:chart-line
+        availability: "{{ states('sensor.ochsner_wp_strom_warmwasser_monat') | float(0) > 1 }}"
+        state: >
+          {{ (states('sensor.ochsner_wp_warme_warmwasser_monat') | float(0) / states('sensor.ochsner_wp_strom_warmwasser_monat') | float) | round(2) }}
+
+      - name: "Ochsner WP Arbeitszahl Warmwasser seit Zähler"
+        unique_id: ochsner_wp_arbeitszahl_warmwasser_seit_zahler
+        state_class: measurement
+        icon: mdi:chart-line
+        availability: "{{ states('sensor.ochsner_wp_strom_warmwasser_seit_zahler') | float(0) > 1 }}"
+        state: >
+          {{ (states('sensor.ochsner_wp_warme_warmwasser_seit_zahler') | float(0) / states('sensor.ochsner_wp_strom_warmwasser_seit_zahler') | float) | round(2) }}
+
+utility_meter:
+  ochsner_wp_strom_heute:
+    name: "Ochsner WP Strom heute"
+    unique_id: ochsner_wp_strom_heute
+    source: sensor.ochsner_wp_stromverbrauch
+    cycle: daily
+  ochsner_wp_strom_monat:
+    name: "Ochsner WP Strom Monat"
+    unique_id: ochsner_wp_strom_monat
+    source: sensor.ochsner_wp_stromverbrauch
+    cycle: monthly
+  ochsner_wp_strom_seit_zahler:
+    name: "Ochsner WP Strom seit Zähler"
+    unique_id: ochsner_wp_strom_seit_zahler
+    source: sensor.ochsner_wp_stromverbrauch
+  ochsner_wp_warme_heute:
+    name: "Ochsner WP Wärme heute"
+    unique_id: ochsner_wp_warme_heute
+    source: sensor.ochsner_wp_warme_inkl_heizstab
+    cycle: daily
+  ochsner_wp_warme_monat:
+    name: "Ochsner WP Wärme Monat"
+    unique_id: ochsner_wp_warme_monat
+    source: sensor.ochsner_wp_warme_inkl_heizstab
+    cycle: monthly
+  ochsner_wp_warme_seit_zahler:
+    name: "Ochsner WP Wärme seit Zähler"
+    unique_id: ochsner_wp_warme_seit_zahler
+    source: sensor.ochsner_wp_warme_inkl_heizstab
+  ochsner_wp_strom_heizen_heute:
+    name: "Ochsner WP Strom Heizen heute"
+    unique_id: ochsner_wp_strom_heizen_heute
+    source: sensor.ochsner_wp_strom_heizen
+    cycle: daily
+  ochsner_wp_strom_heizen_monat:
+    name: "Ochsner WP Strom Heizen Monat"
+    unique_id: ochsner_wp_strom_heizen_monat
+    source: sensor.ochsner_wp_strom_heizen
+    cycle: monthly
+  ochsner_wp_strom_heizen_seit_zahler:
+    name: "Ochsner WP Strom Heizen seit Zähler"
+    unique_id: ochsner_wp_strom_heizen_seit_zahler
+    source: sensor.ochsner_wp_strom_heizen
+  ochsner_wp_strom_warmwasser_heute:
+    name: "Ochsner WP Strom Warmwasser heute"
+    unique_id: ochsner_wp_strom_warmwasser_heute
+    source: sensor.ochsner_wp_strom_warmwasser
+    cycle: daily
+  ochsner_wp_strom_warmwasser_monat:
+    name: "Ochsner WP Strom Warmwasser Monat"
+    unique_id: ochsner_wp_strom_warmwasser_monat
+    source: sensor.ochsner_wp_strom_warmwasser
+    cycle: monthly
+  ochsner_wp_strom_warmwasser_seit_zahler:
+    name: "Ochsner WP Strom Warmwasser seit Zähler"
+    unique_id: ochsner_wp_strom_warmwasser_seit_zahler
+    source: sensor.ochsner_wp_strom_warmwasser
+  ochsner_wp_warme_heizen_heute:
+    name: "Ochsner WP Wärme Heizen heute"
+    unique_id: ochsner_wp_warme_heizen_heute
+    source: sensor.ochsner_wp_heizenergie_gesamt
+    cycle: daily
+  ochsner_wp_warme_heizen_monat:
+    name: "Ochsner WP Wärme Heizen Monat"
+    unique_id: ochsner_wp_warme_heizen_monat
+    source: sensor.ochsner_wp_heizenergie_gesamt
+    cycle: monthly
+  ochsner_wp_warme_heizen_seit_zahler:
+    name: "Ochsner WP Wärme Heizen seit Zähler"
+    unique_id: ochsner_wp_warme_heizen_seit_zahler
+    source: sensor.ochsner_wp_heizenergie_gesamt
+  ochsner_wp_warme_warmwasser_heute:
+    name: "Ochsner WP Wärme Warmwasser heute"
+    unique_id: ochsner_wp_warme_warmwasser_heute
+    source: sensor.ochsner_wp_warmwasserenergie_gesamt
+    cycle: daily
+  ochsner_wp_warme_warmwasser_monat:
+    name: "Ochsner WP Wärme Warmwasser Monat"
+    unique_id: ochsner_wp_warme_warmwasser_monat
+    source: sensor.ochsner_wp_warmwasserenergie_gesamt
+    cycle: monthly
+  ochsner_wp_warme_warmwasser_seit_zahler:
+    name: "Ochsner WP Wärme Warmwasser seit Zähler"
+    unique_id: ochsner_wp_warme_warmwasser_seit_zahler
+    source: sensor.ochsner_wp_warmwasserenergie_gesamt

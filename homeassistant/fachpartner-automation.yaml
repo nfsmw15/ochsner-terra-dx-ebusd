@@ -1,0 +1,27 @@
+# Fachpartner-Ebene offen halten, damit ebusd auch die Fachpartner-Parameter ([fp=1]) liest,
+# u. a. 23-003 Heizleistung aktuell. Die Sitzung läuft nach ca. 20 min von selbst ab; die Anmeldung
+# wird nur wiederholt, wenn 04-043 wieder auf "Benutzer" steht (keine unnötigen Bus-Schreibzugriffe).
+# Installation: als /config/packages/ochsner_fachpartner.yaml ablegen.
+automation:
+  - id: ochsner_fachpartner_anmeldung
+    alias: "Ochsner Fachpartner-Anmeldung"
+    description: "Meldet die TEM-Steuerung per ebusd an der Fachpartner-Ebene an, sobald sie abgelaufen ist."
+    mode: single
+    max_exceeded: silent
+    triggers:
+      - trigger: state
+        entity_id: sensor.heating_ochsner_anlage_ebene_einsteller_04_043
+        to: "Benutzer"
+      - trigger: homeassistant
+        event: start
+      - trigger: time_pattern
+        minutes: "/15"
+    conditions:
+      - condition: state
+        entity_id: sensor.heating_ochsner_anlage_ebene_einsteller_04_043
+        state: "Benutzer"
+    actions:
+      - action: mqtt.publish
+        data:
+          topic: ebusd/Anlage/passwort/set
+          payload: "216"

@@ -1,0 +1,280 @@
+# Ochsner TERRA DX 5 HCUA – Zusatzsensoren auf Basis der ebusd-Werte (tem/15.24849.csv)
+# Ablage: /config/packages/ochsner.yaml
+
+template:
+  # Gesamtzähler aus MWh-Teil + kWh-Teil. Der kWh-Teil läuft bei 1000 über, bevor der
+  # MWh-Teil hochzählt; ein kurzzeitiger Rückgang wird ignoriert, damit die
+  # Energiestatistik (total_increasing) keinen falschen Zählerreset sieht.
+  - trigger:
+      - platform: state
+        entity_id:
+          - sensor.heating_ochsner_waermepumpe_heizenergie_kwh_23_001
+          - sensor.heating_ochsner_waermepumpe_heizenergie_mwh_23_010
+          - sensor.heating_ochsner_waermepumpe_warmwasserenergie_kwh_23_006
+          - sensor.heating_ochsner_waermepumpe_warmwasserenergie_mwh_23_013
+          - sensor.heating_ochsner_zusatzheizung_heizenergie_kwh_23_001
+          - sensor.heating_ochsner_zusatzheizung_heizenergie_mwh_23_010
+    sensor:
+      - name: "Ochsner WP Heizenergie gesamt"
+        unique_id: ochsner_wp_heizenergie_gesamt
+        unit_of_measurement: kWh
+        device_class: energy
+        state_class: total_increasing
+        state: >
+          {% set kwh = states('sensor.heating_ochsner_waermepumpe_heizenergie_kwh_23_001') | float(none) %}
+          {% set mwh = states('sensor.heating_ochsner_waermepumpe_heizenergie_mwh_23_010') | float(none) %}
+          {% set old = this.state | float(0) %}
+          {% if kwh is none or mwh is none %}{{ this.state }}
+          {% else %}{% set new = (mwh * 1000 + kwh) | round(1) %}{{ new if new >= old or old - new > 5000 else old }}{% endif %}
+      - name: "Ochsner WP Warmwasserenergie gesamt"
+        unique_id: ochsner_wp_warmwasserenergie_gesamt
+        unit_of_measurement: kWh
+        device_class: energy
+        state_class: total_increasing
+        state: >
+          {% set kwh = states('sensor.heating_ochsner_waermepumpe_warmwasserenergie_kwh_23_006') | float(none) %}
+          {% set mwh = states('sensor.heating_ochsner_waermepumpe_warmwasserenergie_mwh_23_013') | float(none) %}
+          {% set old = this.state | float(0) %}
+          {% if kwh is none or mwh is none %}{{ this.state }}
+          {% else %}{% set new = (mwh * 1000 + kwh) | round(1) %}{{ new if new >= old or old - new > 5000 else old }}{% endif %}
+      - name: "Ochsner Zusatzheizung Heizenergie gesamt"
+        unique_id: ochsner_zh_heizenergie_gesamt
+        unit_of_measurement: kWh
+        device_class: energy
+        state_class: total_increasing
+        state: >
+          {% set kwh = states('sensor.heating_ochsner_zusatzheizung_heizenergie_kwh_23_001') | float(none) %}
+          {% set mwh = states('sensor.heating_ochsner_zusatzheizung_heizenergie_mwh_23_010') | float(none) %}
+          {% set old = this.state | float(0) %}
+          {% if kwh is none or mwh is none %}{{ this.state }}
+          {% else %}{% set new = (mwh * 1000 + kwh) | round(1) %}{{ new if new >= old or old - new > 5000 else old }}{% endif %}
+
+  - sensor:
+      - name: "Ochsner WP Wärme gesamt"
+        unique_id: ochsner_wp_waerme_gesamt
+        unit_of_measurement: kWh
+        device_class: energy
+        state_class: total_increasing
+        availability: >
+          {{ has_value('sensor.ochsner_wp_heizenergie_gesamt') and has_value('sensor.ochsner_wp_warmwasserenergie_gesamt') }}
+        state: >
+          {{ (states('sensor.ochsner_wp_heizenergie_gesamt') | float + states('sensor.ochsner_wp_warmwasserenergie_gesamt') | float) | round(1) }}
+
+      - name: "Ochsner WP Betriebsstunden"
+        unique_id: ochsner_wp_betriebsstunden
+        unit_of_measurement: h
+        device_class: duration
+        state_class: total_increasing
+        availability: "{{ has_value('sensor.heating_ochsner_waermepumpe_betriebsstunden_02_081') }}"
+        state: >
+          {{ (states('sensor.heating_ochsner_waermepumpe_betriebsstunden_02_081') | float
+              + states('sensor.heating_ochsner_waermepumpe_betriebsstunden_02_081_minutes') | float(0) / 60) | round(2) }}
+
+      - name: "Ochsner WP Laufzeit pro Start"
+        unique_id: ochsner_wp_laufzeit_pro_start
+        unit_of_measurement: min
+        state_class: measurement
+        icon: mdi:timer-sync-outline
+        availability: >
+          {{ has_value('sensor.ochsner_wp_betriebsstunden') and states('sensor.heating_ochsner_waermepumpe_schaltzyklen_02_080') | float(0) > 0 }}
+        state: >
+          {{ (states('sensor.ochsner_wp_betriebsstunden') | float * 60
+              / states('sensor.heating_ochsner_waermepumpe_schaltzyklen_02_080') | float) | round(1) }}
+
+      - name: "Ochsner WP Spreizung"
+        unique_id: ochsner_wp_spreizung
+        unit_of_measurement: K
+        device_class: temperature
+        state_class: measurement
+        availability: >
+          {{ has_value('sensor.heating_ochsner_waermepumpe_ist_temp_twv_00_007') and has_value('sensor.heating_ochsner_waermepumpe_ist_temp_twr_00_008') }}
+        state: >
+          {{ (states('sensor.heating_ochsner_waermepumpe_ist_temp_twv_00_007') | float
+              - states('sensor.heating_ochsner_waermepumpe_ist_temp_twr_00_008') | float) | round(1) }}
+
+      # 23-003 liefert der Regler nur auf Fachpartner-Ebene -> Heizleistung aus Durchfluss und Spreizung
+      # (Wasser: 4,18 kJ/kg·K, ~0,99 kg/l). Stimmt mit 23-003 überein (z. B. 23,9 l/min · 3,3 K ≈ 5,4 kW).
+      - name: "Ochsner WP Heizleistung berechnet"
+        unique_id: ochsner_wp_heizleistung_berechnet
+        unit_of_measurement: kW
+        device_class: power
+        state_class: measurement
+        availability: >
+          {{ has_value('sensor.heating_ochsner_waermepumpe_volumenstrom_warmepumpe_21_002')
+             and has_value('sensor.heating_ochsner_waermepumpe_ist_temp_twv_00_007')
+             and has_value('sensor.heating_ochsner_waermepumpe_ist_temp_twr_00_008') }}
+        state: >
+          {% set fl = states('sensor.heating_ochsner_waermepumpe_volumenstrom_warmepumpe_21_002') | float(0) %}
+          {% set dt = states('sensor.heating_ochsner_waermepumpe_ist_temp_twv_00_007') | float(0)
+                    - states('sensor.heating_ochsner_waermepumpe_ist_temp_twr_00_008') | float(0) %}
+          {{ [fl / 60 * 4.18 * 0.99 * dt, 0] | max | round(2) if fl > 1 else 0 }}
+
+      # Stellung der Umschaltventile: der TEM schickt dem WP-Modul (03) zyklisch 0501 mit der Betriebsart,
+      # das Modul schaltet internes und externes Umschaltventil danach (verifiziert 2026-10-24 bei WW-Ladung).
+      # Fallback ohne dieses Signal: aus dem Warmwasser-Status abgeleitet.
+      - name: "Ochsner Umschaltventile"
+        unique_id: ochsner_umschaltventile
+        icon: mdi:valve
+        availability: >
+          {{ has_value('sensor.warmepumpe_ochsner_waermepumpe_anforderung_an_warmeerzeuger_betriebsart')
+             or has_value('sensor.heating_ochsner_warmwasserkreis_status_warmwasserregelung_02_052') }}
+        state: >
+          {% set ba = states('sensor.warmepumpe_ochsner_waermepumpe_anforderung_an_warmeerzeuger_betriebsart') %}
+          {% set ww = states('sensor.heating_ochsner_warmwasserkreis_status_warmwasserregelung_02_052') %}
+          {% if ba in ['Warmwasser', 'Heizen'] %}{{ 'Warmwasser' if ba == 'Warmwasser' else 'Heizung' }}
+          {% else %}{{ 'Warmwasser' if 'Ladebetrieb' in ww or ww in ['Zwangsladung', 'Elektro Nachladung'] else 'Heizung' }}{% endif %}
+
+      - name: "Ochsner Betriebszustand"
+        unique_id: ochsner_betriebszustand
+        icon: mdi:heat-pump-outline
+        state: >
+          {% set wp = states('sensor.heating_ochsner_waermepumpe_status_warmeerzeuger_02_053') %}
+          {% set ww = states('sensor.heating_ochsner_warmwasserkreis_status_warmwasserregelung_02_052') %}
+          {% set kw = states('sensor.ochsner_wp_heizleistung_berechnet') | float(0) %}
+          {% if wp in ['unknown', 'unavailable'] %}unbekannt
+          {% elif wp == 'Abgeschaltet' %}Abgeschaltet / Standby
+          {% else %}{{ wp }}{% if ww not in ['Abgeschaltet', 'unknown', 'unavailable'] %} · Warmwasser: {{ ww }}{% endif %}{% if kw > 0 %} · {{ kw | round(1) }} kW{% endif %}{% endif %}
+
+
+
+# Mehrteilige Nachrichten (0622) meldet ebusd nicht per Discovery an -> direkt als MQTT-Sensoren
+mqtt:
+  sensor:
+    - name: "Ochsner Störung 1"
+      unique_id: ochsner_stoerung_1
+      state_topic: "ebusd/Stoerungen/eintrag1"
+      icon: mdi:alert-circle-outline
+      value_template: >
+        {% set d = (as_datetime('1899-12-31') + timedelta(days=value_json.datum.value | int)).strftime('%d.%m.%Y') %}
+        {% set m = value_json.zeit.value | int % 1440 %}
+        {{ d }} {{ '%02d:%02d' % (m // 60, m % 60) }} – {{ value_json.code.value }}
+      json_attributes_topic: "ebusd/Stoerungen/eintrag1"
+      json_attributes_template: >
+        {% set ns = namespace(d={}) %}{% for k, v in value_json.items() %}{% set ns.d = dict(ns.d, **{k: v.value}) %}{% endfor %}{{ ns.d | tojson }}
+    - name: "Ochsner Störung 2"
+      unique_id: ochsner_stoerung_2
+      state_topic: "ebusd/Stoerungen/eintrag2"
+      icon: mdi:alert-circle-outline
+      value_template: >
+        {% set d = (as_datetime('1899-12-31') + timedelta(days=value_json.datum.value | int)).strftime('%d.%m.%Y') %}
+        {% set m = value_json.zeit.value | int % 1440 %}
+        {{ d }} {{ '%02d:%02d' % (m // 60, m % 60) }} – {{ value_json.code.value }}
+      json_attributes_topic: "ebusd/Stoerungen/eintrag2"
+      json_attributes_template: >
+        {% set ns = namespace(d={}) %}{% for k, v in value_json.items() %}{% set ns.d = dict(ns.d, **{k: v.value}) %}{% endfor %}{{ ns.d | tojson }}
+    - name: "Ochsner Störung 3"
+      unique_id: ochsner_stoerung_3
+      state_topic: "ebusd/Stoerungen/eintrag3"
+      icon: mdi:alert-circle-outline
+      value_template: >
+        {% set d = (as_datetime('1899-12-31') + timedelta(days=value_json.datum.value | int)).strftime('%d.%m.%Y') %}
+        {% set m = value_json.zeit.value | int % 1440 %}
+        {{ d }} {{ '%02d:%02d' % (m // 60, m % 60) }} – {{ value_json.code.value }}
+      json_attributes_topic: "ebusd/Stoerungen/eintrag3"
+      json_attributes_template: >
+        {% set ns = namespace(d={}) %}{% for k, v in value_json.items() %}{% set ns.d = dict(ns.d, **{k: v.value}) %}{% endfor %}{{ ns.d | tojson }}
+    - name: "Ochsner Störung 4"
+      unique_id: ochsner_stoerung_4
+      state_topic: "ebusd/Stoerungen/eintrag4"
+      icon: mdi:alert-circle-outline
+      value_template: >
+        {% set d = (as_datetime('1899-12-31') + timedelta(days=value_json.datum.value | int)).strftime('%d.%m.%Y') %}
+        {% set m = value_json.zeit.value | int % 1440 %}
+        {{ d }} {{ '%02d:%02d' % (m // 60, m % 60) }} – {{ value_json.code.value }}
+      json_attributes_topic: "ebusd/Stoerungen/eintrag4"
+      json_attributes_template: >
+        {% set ns = namespace(d={}) %}{% for k, v in value_json.items() %}{% set ns.d = dict(ns.d, **{k: v.value}) %}{% endfor %}{{ ns.d | tojson }}
+    - name: "Ochsner Störung 5"
+      unique_id: ochsner_stoerung_5
+      state_topic: "ebusd/Stoerungen/eintrag5"
+      icon: mdi:alert-circle-outline
+      value_template: >
+        {% set d = (as_datetime('1899-12-31') + timedelta(days=value_json.datum.value | int)).strftime('%d.%m.%Y') %}
+        {% set m = value_json.zeit.value | int % 1440 %}
+        {{ d }} {{ '%02d:%02d' % (m // 60, m % 60) }} – {{ value_json.code.value }}
+      json_attributes_topic: "ebusd/Stoerungen/eintrag5"
+      json_attributes_template: >
+        {% set ns = namespace(d={}) %}{% for k, v in value_json.items() %}{% set ns.d = dict(ns.d, **{k: v.value}) %}{% endfor %}{{ ns.d | tojson }}
+    - name: "Ochsner Störung 6"
+      unique_id: ochsner_stoerung_6
+      state_topic: "ebusd/Stoerungen/eintrag6"
+      icon: mdi:alert-circle-outline
+      value_template: >
+        {% set d = (as_datetime('1899-12-31') + timedelta(days=value_json.datum.value | int)).strftime('%d.%m.%Y') %}
+        {% set m = value_json.zeit.value | int % 1440 %}
+        {{ d }} {{ '%02d:%02d' % (m // 60, m % 60) }} – {{ value_json.code.value }}
+      json_attributes_topic: "ebusd/Stoerungen/eintrag6"
+      json_attributes_template: >
+        {% set ns = namespace(d={}) %}{% for k, v in value_json.items() %}{% set ns.d = dict(ns.d, **{k: v.value}) %}{% endfor %}{{ ns.d | tojson }}
+    - name: "Ochsner Seriennummer"
+      unique_id: ochsner_seriennummer
+      state_topic: "ebusd/Anlage/seriennummer"
+      icon: mdi:card-account-details-outline
+      entity_category: diagnostic
+      value_template: "{{ value_json['0'].value }}"
+    - name: "Ochsner Anlagenbetreiber"
+      unique_id: ochsner_anlagenbetreiber
+      state_topic: "ebusd/Anlage/anlagenbetreiber"
+      icon: mdi:card-account-details-outline
+      entity_category: diagnostic
+      value_template: "{{ value_json['0'].value }}"
+    - name: "Ochsner Installateur"
+      unique_id: ochsner_installateur
+      state_topic: "ebusd/Anlage/installateur"
+      icon: mdi:card-account-details-outline
+      entity_category: diagnostic
+      value_template: "{{ value_json['0'].value }}"
+    - name: "Ochsner Planer"
+      unique_id: ochsner_planer
+      state_topic: "ebusd/Anlage/planer"
+      icon: mdi:card-account-details-outline
+      entity_category: diagnostic
+      value_template: "{{ value_json['0'].value }}"
+    - name: "Ochsner letzter Zugriff Fachpartner"
+      unique_id: ochsner_zugriff_fachpartner_mqtt
+      state_topic: "ebusd/Anlage/p02_069_letzter_zugriff_fachpartner"
+      device_class: date
+      entity_category: diagnostic
+      value_template: "{{ (as_datetime('1899-12-31') + timedelta(days=value_json['0'].value | int)).date() }}"
+    - name: "Ochsner letzter Zugriff OEM"
+      unique_id: ochsner_zugriff_oem_mqtt
+      state_topic: "ebusd/Anlage/p02_068_letzter_zugriff_oem"
+      device_class: date
+      entity_category: diagnostic
+      value_template: "{{ (as_datetime('1899-12-31') + timedelta(days=value_json['0'].value | int)).date() }}"
+
+
+# Stunden pro Tag je Betriebszustand – landen als Zahl in der Langzeitstatistik und bleiben dauerhaft erhalten
+sensor:
+  - platform: history_stats
+    name: "Ochsner WP Heizbetrieb heute"
+    unique_id: ochsner_wp_heizbetrieb_heute
+    entity_id: sensor.heating_ochsner_waermepumpe_status_warmeerzeuger_02_053
+    state: "Heizbetrieb"
+    type: time
+    start: "{{ today_at() }}"
+    end: "{{ now() }}"
+  - platform: history_stats
+    name: "Ochsner WP Warmwasserladung heute"
+    unique_id: ochsner_wp_warmwasser_heute
+    entity_id: sensor.heating_ochsner_warmwasserkreis_status_warmwasserregelung_02_052
+    state: ["Normal Ladebetrieb", "Komfort Ladebetrieb", "Spar Ladebetrieb", "Zwangsladung"]
+    type: time
+    start: "{{ today_at() }}"
+    end: "{{ now() }}"
+  - platform: history_stats
+    name: "Ochsner WP Vorlaufzeit heute"
+    unique_id: ochsner_wp_vorlaufzeit_heute
+    entity_id: sensor.heating_ochsner_waermepumpe_status_warmeerzeuger_02_053
+    state: "Vorlaufzeit Heizbetrieb"
+    type: time
+    start: "{{ today_at() }}"
+    end: "{{ now() }}"
+  - platform: history_stats
+    name: "Ochsner WP Abgeschaltet heute"
+    unique_id: ochsner_wp_abgeschaltet_heute
+    entity_id: sensor.heating_ochsner_waermepumpe_status_warmeerzeuger_02_053
+    state: "Abgeschaltet"
+    type: time
+    start: "{{ today_at() }}"
+    end: "{{ now() }}"

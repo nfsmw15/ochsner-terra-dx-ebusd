@@ -1,0 +1,81 @@
+param,block,name,values,note
+# Am Display bestätigte Namen und Wertelisten (Quelle: am Display abgelesen)
+03-050,0a,Betriebswahl Heizung,0=Standbybetrieb;1=Automatik;4=Normalbetrieb;5=Sparbetrieb;7=Handbetrieb Heizen,
+06-014,10,Notbetrieb,1=Notbetrieb reduziert;2=Notbetrieb normal,
+06-015,10,Betriebswahl Wärmemanager,1=Automatik,
+06-076,10,Applikationstyp Wärmemanager,0=kein Puffer;1=Puffer / Weiche;2=Puffer 2 Fühler (TPO/TPM);3=Puffer Kühlung;4=kein Puffer/Weiche 2 F.,2 bestätigt; Liste aus Handbuch ZBH-Raumterminal 4.0
+04-076,00,Applikationstyp Globalfunktion,0=Externes Sperrsignal (EVU);1=Smart Grid PV (Pin 21);2=SG nach BWP (Pin 21 und 43),aktuell 0
+02-068,00,Letzter Zugriff OEM,,Datum Tage seit 31.12.1899
+02-069,00,Letzter Zugriff Fachpartner,,Datum Tage seit 31.12.1899
+04-090,00,Seriennummer,,Text (0622)
+04-095,00,Kunde,,Text (0622)
+04-096,00,Fachpartner,,Text (0622)
+04-097,00,Fachpartner 2,,Text (0622)
+00-015,10,TPO Puffertemperatur oben,,
+00-017,10,TPM Puffertemperatur Mitte,,
+00-096,10,Anlage Vorlauftemperatur,,
+01-096,10,Sollwert Anlage,,
+02-040,10,Heizleistung Heizbetrieb,,kW /10
+02-041,10,Heizleistung Warmwasserbetrieb,,kW /10
+02-054,10,Status Wärmemanager,1=Heizen,
+03-012,0a,Norm-Außentemperatur Heizkurve,,1-Byte-Felder SCH ganze °C: Wert -12 (Bereich -30..5) – bestätigt
+03-013,0a,VLT bei Norm-Außentemperatur,,1-Byte-Felder Schritt 0.5 °C: Wert 35.0 (Bereich 30..90) – bestätigt
+03-001,0a,Fußpunkt Vorlauftemperatur Heizbetrieb,,20.0 °C – bestätigt
+03-002,0a,Heizgrenze Sparbetrieb,,15.0 °C – bestätigt
+07-009,0a,Solltemperatur Handbetrieb,,18.0 °C – bestätigt
+05-004,0e,Legionellenschutztemperatur,,1-Byte ganze °C: 60 – bestätigt
+23-003,02,Heizleistung aktuell,,Anleitung 23-003 Heizleistung; 5.42 kW im Lauf beobachtet
+23-005,02,Kühlenergie kWh,,Anleitung
+23-006,02,Warmwasserenergie kWh,,bestätigt 562.2
+23-012,02,Kühlenergie MWh,,Anleitung
+23-000,02,Stromverbrauch kWh,,Anleitung: nur mit S0-Zähler
+23-009,02,Stromverbrauch MWh,,Anleitung: nur mit S0-Zähler
+01-040,04,Zusatzheizung Stellgrad,,Anleitung 01-040 Zusatzheizung
+17-010,04,Leistung Heizstab,,880 = 8.8 kW passt zum Datenblatt (abgeleitet)
+02-071,00,Wochenzeit,,Minuten seit Montag 0:00 (abgeleitet)
+04-089,00,Datum 04-089,,12.07.2017 – vermutlich Herstell-/Programmierdatum (abgeleitet)
+02-051,0a,Status Heizkreis,,Tippfehler HK Staus aus TEM-Config korrigiert
+09-012,04,Außentemperatur Freigabe (Bivalenzpunkt),,0.0 °C bestätigt; 1-Byte-Felder 0.5-°C-Schritte Bereich -50..50
+09-071,04,Freigabe Bivalenzsperre bei SmartGrid Zwangsladung,0=Sperre aktiv;1=Sperre deaktiviert,bestätigt
+10-076,04,Applikationstyp E-Zusatzheizung,0=Kein WEZ;1=WEZ im Puffer;2=WEZ im Vorlauf WP,2 bestätigt (nur OEM änderbar); Liste aus Handbuch ZBH-Raumterminal 4.0
+03-011,0a,Fußpunkt Außentemperatur Heizkurve,,abgeleitet aus Anleitung Kap. 5.7 Legende Punkt 3; nicht im Display-Menü
+03-001,0a,Fußpunkt Vorlauftemperatur Heizkurve,,bestätigt 20.0 °C Bereich 10..40 Schritt 0.5
+03-012,0a,Norm-Außentemperatur Heizkurve,,bestätigt -12 °C Bereich -30..5 Schritt 1
+03-013,0a,VLT bei Norm-Außentemperatur Heizkurve,,bestätigt 35.0 °C Bereich 30..90 Schritt 0.5
+06-014,00,Betriebsart Notbetrieb,1=Notbetrieb reduziert;2=Notbetrieb normal,bestätigt
+# aus Menü-Fotos (Bilder menü/, 23.10.2026)
+00-004,0e,IST Temp. TB Warmwasser,,Foto
+00-007,02,IST Temp. TWV,,Foto (WP und Zusatzheizung)
+00-008,02,IST Temp. TWR,,Foto
+01-022,02,Wärmeerzeugerpumpe,,Foto
+01-076,02,SOLL Verdichter,,Foto
+01-077,02,Wärmequellenpumpe,,Foto
+02-053,02,Status Wärmeerzeuger,,Foto
+21-002,02,Volumenstrom Wärmepumpe,,Foto (gekürzt "Volumenstrom Wä")
+01-054,0e,Ladung Elektro/WP,,Foto (gekürzt "Ladung Elektro/")
+01-066,0e,Umlenkventil/Ladepumpe,,Foto (gekürzt "Umlenkventil/La")
+22-066,0e,Stellgröße Umlenkventil,,Foto
+00-009,12,Leistung Wärmeerzeuger,,Foto Kaskadenmanager (je WE 1-8)
+01-009,12,Leistung Sollwert,,Foto Kaskadenmanager (je WE 1-8)
+02-055,12,Status Kaskaden,,Foto
+11-076,12,Applikationstyp Kaskadenmanager,0=Keine WEZ;1=WEZ im Puffer;2=WEZ im Vorlauf WP,Foto; Liste aus Handbuch ZBH-Raumterminal 4.0
+04-042,00,Passworteingabe,,Foto (Display zeigt hier die Challenge-Zahl)
+04-095,00,Anlagenbetreiber,,Foto Stammdaten
+04-096,00,Installateur,,Foto Stammdaten
+04-097,00,Planer,,Foto Stammdaten
+04-090,00,Seriennummer,,Foto Stammdaten
+05-076,0e,Applikationstyp Warmwasserbereitung,11=Wert_11_undokumentiert,Anlage meldet 11 - in KEINER Quelle dokumentiert: TEM-Parameterliste SE 6024 WPC definiert nur 0-3 (Max 6; 0=nicht aktiv;1=ULV+WEP;2=ULV+HKP1 m.Nachheizung;3=ULV+WEP m.Nachheizung+ZP); Ochsner Raumterminal 4.0 listet andere 0-9; Werte firmwarespezifisch -> Wert_11 bleibt
+09-007,02,Wärmeerzeuger Typ,0=Kein Wärmeerzeuger aktiv;5=Wärmepumpe ohne Kühlfunktion;6=Wärmepumpe mit Kühlfunktion,bestätigt: Anlage meldet 5; Quelle TEM Parameterliste SE 6024 WPC (114773, 07-2017)
+# aus offizieller TEM-Parameterliste SE 6024 WPC (114773, 07-2017), nachgetragen 2026-11-16
+02-010,0a,Partytimer Heizbetrieb,,Restzeit Partybetrieb Heizkreis (TEM-Liste)
+02-011,0e,Partytimer Warmwasserbetrieb,,Restzeit Partybetrieb Warmwasser (TEM-Liste)
+02-018,0a,Abwesenheit Heizbetrieb,,Restzeit Abwesenheitsbetrieb Heizkreis (TEM-Liste)
+03-078,0a,Ferien,,Ferienprogramm Enddatum - Tage seit 31.12.1899 (TEM-Liste)
+04-022,12,eBUS Zieladresse Wärmeerzeuger,0=kein;11=Wärmeerzeuger 1;12=Wärmeerzeuger 2;13=Wärmeerzeuger 3;14=Wärmeerzeuger 4;15=Wärmeerzeuger 5;22=Wärmeerzeuger 6;23=Wärmeerzeuger 7;24=Wärmeerzeuger 8,TEM-Liste
+05-069,0e,Warmwassertemperatur Vorzugsbetrieb,,TEM-Liste
+06-030,10,Puffer Solltemperatur Sonderzeitfreigabe,,Sollwert während Sonderzeitfreigabe (TEM-Liste)
+07-006,0a,Fehlerdauer Vorlauf,,Zeit mit Vorlauf unter Sollwert bis Störung (TEM-Liste)
+11-001,12,Steuerbefehl Wärmeerzeuger,1=Temperatursteuerung mit WW;2=Leistungssteuerung mit WW;3=Temperatursteuerung ohne WW;4=Leistungssteuerung ohne WW,TEM-Liste
+11-002,12,Nennleistung Wärmeerzeuger,,Maximalleistung WE 0-999 kW (TEM-Liste)
+11-005,12,Folgewechsel,0=Keine Umschaltung bei Sequenzwechsel;1=Umschaltung bei Sequenzwechsel;2=Leistungsausgleich;3=Leistungsausgleich und Umschaltung,TEM-Liste
+23-014,02,Kühlleistung aktuell,,Aktuelle Kühlleistung (TEM-Liste; bei DX-Anlage ohne Kühlung stets 0)
