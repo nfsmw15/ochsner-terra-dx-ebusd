@@ -9,5 +9,5 @@ param,block,values
 15-006,02,8=GMDWplus
 09-011,02,0=Frei;1=Gesperrt;2=TA > BiP;3=TA < BiP
 09-011,04,0=Frei;1=Gesperrt;2=TA > BiP;3=TA < BiP;4=WW Mod 1;5=WW Mod 2;6=WW Mod 3;7=WW Mod 4;8=TA < BiP oder WW Mod 1;9=TA < BiP oder WW Mod 2;10=TA < BiP oder WW Mod 3;11=TA < BiP oder WW Mod 4
-07-076,0a,3=gemischte Zone H
+07-076,0a,0=Heizkreis nicht aktiv;1=Pumpenkreis ohne Kühlung;2=Pumpenkreis mit Kühlung;3=Mischerkreis ohne Kühlung;4=Mischerkreis mit Kühlung;5=Mischerkreis Heizen Monoeinheit;6=Mischerkreis Heizen und Kühlen Monoeinheit;7=Mischerkreis Bivalent;8=Mischerkreis Bivalent mit Kühlen;9=Pumpenkreis mit Kühlung GLT 0-10V
 04-043,00,0=Benutzer;1=Fachpartner;2=OEM

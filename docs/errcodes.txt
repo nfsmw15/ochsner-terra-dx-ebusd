@@ -1,2 +1,56 @@
-# OTE Störspeicher-Codes (RA_OTE_3+4_EK_DE06.pdf, Kap. 17.2.2), Format für ebusd-Werteliste
-1=Er 56: Durchfluss Wärmequelle;2=Er 57: Frostschutz Wärmequelle;3=Er 58: Motorschutz Wärmequelle;5=Er 36: Hochdruck;8=Er 42: Frostschutz Wärmenutzung;9=Er 47: Abtaustörung;10=Er 39: Motorschutz Verdichter;11=Er 30: Phasenüberwachung;12=Er 50: Expansionsventil;16=Er 38: Heißgas;18=Er 37: Niederdruck;20=Er 91: Durchfluss Wärmenutzung;21=Er 90: Überhitzung;30=Er 80: Adresse WEZ 1;31=Er 81: Adresse WEZ 2;32=Er 82: Adresse WEZ 3;33=Er 83: Adresse WEZ 4;34=Er 84: Adresse WEZ 5;35=Er 85: Adresse WEZ 6;36=Er 86: Adresse WEZ 7;37=Er 87: Adresse WEZ 8;42=Er 71: Busstörung Raumbedienteil;98=Er 98: Elektro-Heizstab läuft als alleiniger Wärmeerzeuger;100=Er 200: Kondensationstemperatur zu tief;102=Er 202: Verdampfungstemp. zu tief;103=Er 203: Verdampfungstemp. zu hoch;104=Er 104: Summenstörung Wärmepumpe;129=Er 48: TQE Fühler/Verdampfer 1 defekt;130=Er 49: TQA Fühler/Verdampfer 2 defekt;143=Er 59: Fühlerbruch TWV + TWR;144=Er 60: Fühlerbruch TQA + TQE;240=Er 240: OTE erkennt keine Modbus-Platine
+# OTE Störspeicher-Codes (BIA-TERRA DX M2 M4-DE09.pdf, Kap. 17.2 / S.42), ebusd-Werteliste (nur Codes mit Störspeicher-Code, Zeile 2 wird von temgen.py gelesen)
+1=Er 56: Durchfluss Wärmequelle;2=Er 57: Frostschutz Wärmequelle;3=Er 58: Motorschutz Wärmequelle;5=Er 36: Hochdruck;8=Er 42: Frostschutz Wärmenutzung;9=Er 47: Abtaustörung;10=Er 39: Motorschutz Verdichter;11=Er 30: Phasenüberwachung;12=Er 50: Expansionsventil;16=Er 38: Heißgas;18=Er 37: Niederdruck;20=Er 91: Durchfluss Wärmenutzung;21=Er 90: Überhitzung;30=Er 80: Adresse WEZ 1;31=Er 81: Adresse WEZ 2;32=Er 82: Adresse WEZ 3;33=Er 83: Adresse WEZ 4;34=Er 84: Adresse WEZ 5;35=Er 85: Adresse WEZ 6;36=Er 86: Adresse WEZ 7;37=Er 87: Adresse WEZ 8;42=Er 71: Busstörung Raumbedienteil;98=Er 98: Elektro-Heizstab läuft als alleiniger Wärmeerzeuger;100=Er 200: Kondensationstemperatur zu tief;102=Er 202: Verdampfungstemp. zu tief;103=Er 203: Verdampfungstemp. zu hoch;104=Er 104: Summenstörung Wärmepumpe;108=Er 108: Außenteil Allgemein;109=Er 109: Verdichter überhitzt;129=Er 48: TQE Fühler/Verdampfer 1 defekt;130=Er 49: TQA Fühler/Verdampfer 2 defekt;143=Er 59: Fühlerbruch TWV + TWR;144=Er 60: Fühlerbruch TQA + TQE;240=Er 240: OTE erkennt keine Modbus-Platine;241=Er 241: Modbus-Kommunikationsfehler;242=Er 242: Kommunikationsstörung CAN-Bus
+#
+# Vollstaendige Fehlertabelle BIA-TERRA DX M2/M4 (DE09, S.42). Spalten: Code | Stoerspeicher-Code | Anzeige
+# Nur Zeilen mit Stoerspeicher-Code erscheinen im 0622-Fehlerspeicher (siehe Werteliste oben).
+# Zeilen ohne Stoerspeicher-Code sind reine Display-/Fuehlerfehler und werden NICHT im Speicher abgelegt.
+#
+# Code  Stsp  Anzeige
+# 115   -     Er 01: Warmwasserfuehler defekt
+# 116   -     Er 10: Aussenfuehler defekt
+# 117   -     Er 14: Mischerfuehler defekt
+# 124   -     Er 20: TWR Fuehler defekt
+# 120   -     Er 22: Abschaltfuehler TPM oder TWR defekt
+# 136   -     Er 23: TPV Fuehler defekt
+# 118   -     Er 24: Pufferfuehler defekt
+# 114   -     Er 29: TWV Fuehler defekt
+# 11    11    Er 30: Phasenueberwachung
+# 134   -     Er 32: THG Fuehler defekt
+# 138   -     Er 33: Hochdrucksensor defekt
+# 137   -     Er 34: Niederdrucksensor defekt
+# 5     5     Er 36: Hochdruck
+# 18    18    Er 37: Niederdruck
+# 16    16    Er 38: Heissgas
+# 10    10    Er 39: Motorschutz Verdichter
+# 8     8     Er 42: Frostschutz Waermenutzung
+# -     -     Er 46: TSG Fuehler defekt
+# 9     9     Er 47: Abtaustoerung
+# 129   129   Er 48: TQE Fuehler/Verdampfer 1 defekt
+# 130   130   Er 49: TQA Fuehler/Verdampfer 2 defekt
+# 12    12    Er 50: Expansionsventil
+# 1     1     Er 56: Durchfluss Waermequelle
+# 2     2     Er 57: Frostschutz Waermequelle
+# 3     3     Er 58: Motorschutz Waermequelle
+# 143   143   Er 59: Fuehlerbruch TWV + TWR
+# 144   144   Er 60: Fuehlerbruch TQA + TQE
+# 42    42    Er 71: Busstoerung Raumfernbedienung
+# 30    30    Er 80: Adresse WEZ 1
+# 31    31    Er 81: Adresse WEZ 2
+# 32    32    Er 82: Adresse WEZ 3
+# 33    33    Er 83: Adresse WEZ 4
+# 34    34    Er 84: Adresse WEZ 5
+# 35    35    Er 85: Adresse WEZ 6
+# 36    36    Er 86: Adresse WEZ 7
+# 37    37    Er 87: Adresse WEZ 8
+# 20    20    Er 91: Durchfluss Waermenutzung
+# 21    21    Er 90: Ueberhitzung
+# 98    98    Er 98: Zusatzwaermeerzeuger laeuft als alleiniger Waermeerzeuger
+# 104   104   Er 104: Summenstoerung Waermepumpe
+# 108   108   Er 108: Aussenteil Allgemein
+# 109   109   Er 109: Verdichter ueberhitzt
+# 100   100   Er 200: Kondensationstemperatur zu tief
+# 102   102   Er 202: Verdampfungstemp. zu tief
+# 103   103   Er 203: Verdampfungstemp. zu hoch
+# 240   240   Er 240: OTE erkennt keine Modbus-Platine
+# 241   241   Er 241: Modbus-Kommunikationsfehler
+# 242   242   Er 242: Kommunikationsstoerung CAN-Bus

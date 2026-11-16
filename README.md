@@ -50,9 +50,12 @@ for a way to keep that level active over MQTT.
   data and the two passive module telegrams (`0501` request, `0503` module
   status — the latter gives compressor state, power and flow faster than the
   controller's own registers).
-- **Writes** are included in the CSV only for a small, verified whitelist.
-  Changing controller settings can affect heating safety and your warranty —
-  do it at your own risk and know the parameter first.
+- **Writes** (`0623`, sent to master `0x10`) are included for the settable
+  parameters. Changing controller settings can affect heating safety and your
+  warranty — do it at your own risk and know the parameter first.
+- The **error history** (`0622` chained) is decoded as six entries
+  (`Eintrag1`..`Eintrag6`) with error code, timestamp and the refrigerant-circuit
+  sensor snapshot.
 - A handful of parameters remain labelled `Unbekannt`; they read fine but are
   not documented in any public TEM source (they are OEM-build specific).
 - Value meanings were cross-checked against the controller display and the

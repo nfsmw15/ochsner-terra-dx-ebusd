@@ -1,5 +1,5 @@
 param,block,name,values,note
-# Am Display bestätigte Namen und Wertelisten (Quelle: am Display abgelesen)
+# Am Display bestätigte Namen und Wertelisten (am Display abgelesen)
 03-050,0a,Betriebswahl Heizung,0=Standbybetrieb;1=Automatik;4=Normalbetrieb;5=Sparbetrieb;7=Handbetrieb Heizen,
 06-014,10,Notbetrieb,1=Notbetrieb reduziert;2=Notbetrieb normal,
 06-015,10,Betriebswahl Wärmemanager,1=Automatik,
@@ -64,7 +64,8 @@ param,block,name,values,note
 04-096,00,Installateur,,Foto Stammdaten
 04-097,00,Planer,,Foto Stammdaten
 04-090,00,Seriennummer,,Foto Stammdaten
-05-076,0e,Applikationstyp Warmwasserbereitung,11=Wert_11_undokumentiert,Anlage meldet 11 - in KEINER Quelle dokumentiert: TEM-Parameterliste SE 6024 WPC definiert nur 0-3 (Max 6; 0=nicht aktiv;1=ULV+WEP;2=ULV+HKP1 m.Nachheizung;3=ULV+WEP m.Nachheizung+ZP); Ochsner Raumterminal 4.0 listet andere 0-9; Werte firmwarespezifisch -> Wert_11 bleibt
+07-076,0a,Applikationstyp Heizkreis,0=Heizkreis nicht aktiv;1=Pumpenkreis ohne Kühlung;2=Pumpenkreis mit Kühlung;3=Mischerkreis ohne Kühlung;4=Mischerkreis mit Kühlung;5=Mischerkreis Heizen Monoeinheit;6=Mischerkreis Heizen und Kühlen Monoeinheit;7=Mischerkreis Bivalent;8=Mischerkreis Bivalent mit Kühlen;9=Pumpenkreis mit Kühlung GLT 0-10V,offiziell TEM SE 6024 WPC Fachmannanleitung Dok.112724 S.6 - Ochsner-Anzeige fuer Wert 3 = gemischte Zone H
+05-076,0e,Applikationstyp Warmwasserbereitung,0=nicht aktiv;1=HWBW-K mit TVD Überwachung mit WEP (Klemme 6);2=HWBW-K mit TVD Überwachung mit HKP 2 (Klemme 8);3=HBUV mit ULV und WEP;4=HBUS mit LP und WEP Sperre;5=HBUV Monoeinheit;6=Pool mit ULV und WEP und HWBWK über HBER;7=Pool mit LP und WEP Sperre und HWBWK über HBER;8=Pool 2x ULV mit WEP ELIWELL;9=Pool 2x LP mit WEP Sperre ELIWELL;10=Doppel WP Master 1x HBUV;11=WW-Applikation 11 (OEM über dokumentierte 0-10 hinaus),Werte 0-10 offiziell: TEM SE 6024 WPC Fachmannanleitung Dok.112724 (manualslib 111332 S.6) - Liste endet bei 10; Anlage meldet 11 = Ochsner/firmwarespezifische Applikation oberhalb der TEM-Liste
 09-007,02,Wärmeerzeuger Typ,0=Kein Wärmeerzeuger aktiv;5=Wärmepumpe ohne Kühlfunktion;6=Wärmepumpe mit Kühlfunktion,bestätigt: Anlage meldet 5; Quelle TEM Parameterliste SE 6024 WPC (114773, 07-2017)
 # aus offizieller TEM-Parameterliste SE 6024 WPC (114773, 07-2017), nachgetragen 2026-11-16
 02-010,0a,Partytimer Heizbetrieb,,Restzeit Partybetrieb Heizkreis (TEM-Liste)
